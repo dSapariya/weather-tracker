@@ -1,15 +1,30 @@
 <template>
         <div v-if="$props.isShow" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
       <div class="bg-white w-3/4 md:w-1/2 lg:w-1/3 rounded-lg p-4">
-        <!-- Search input -->
-        <input type="text" v-model="search" @input="getSearchItemsByCity()" placeholder="Search items..." class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500">
-        
-        <!-- Search results -->
+        <input type="text" v-model="search" @input="getSearchItemsByCity()" placeholder="Search by cities..." class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500">
+         <button @click="closeSearchPopup" class="absolute bg-transparent text-gray-600 hover:text-gray-800">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
         <ul class="mt-4">
           <li v-for="(searchCity,index) in searchList" :key="index" class="border-b border-gray-300 py-2" @click="addSelectedCity(searchCity)">{{ searchCity.name }},{{searchCity.country  }}</li>
         </ul>
       </div>
     </div>
+     <!-- <div class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+      <div class="bg-white p-8 rounded shadow-lg relative">
+        <input type="text" v-model="search" class="border border-gray-300 rounded px-4 py-2 w-full mb-4" placeholder="Search by Cities..." @input="getSearchItemsByCity()"/>
+        <button @click="closeSearchPopup" class="absolute top-0 right-0 m-4 bg-transparent text-gray-600 hover:text-gray-800">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+         <ul class="mt-4">
+          <li v-for="(searchCity,index) in searchList" :key="index" class="border-b border-gray-300 py-2" @click="addSelectedCity(searchCity)">{{ searchCity.name }},{{searchCity.country  }}</li>
+        </ul>
+      </div>
+    </div> -->
   <!-- <div>
     <input type="text" placeholder="Search.." v-model="search" @change="getSearchItemsByCity()" />
     <button type="submit" @click="getSearchItemsByCity()"><i class="fa fa-search"></i></button>
@@ -24,7 +39,6 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useCityListStore } from '@/stores/cities'
-import { storeToRefs } from "pinia";
 const props = defineProps({
   isShow: Boolean,
 });
@@ -45,8 +59,6 @@ async function getSearchItemsByCity() {
 }
 function addSelectedCity(searchCity){
     this.getSearchCityCurrentWeather(searchCity);
-    
-    
 }
 async function getSearchCityCurrentWeather(searchCity) {
   axios
@@ -62,5 +74,9 @@ async function getSearchCityCurrentWeather(searchCity) {
     });
     store.addCity(searchCity);
     emit("searchData", false);
+}
+
+function closeSearchPopup(){
+   emit("searchData", false);
 }
 </script>

@@ -12,5 +12,8 @@ export const useCityListStore = defineStore('cityList', {
       this.cityList.push(item)
       console.log('in add City store',this.cityList)
     },
+    deleteCity(indexId) {
+      this.cityList.splice(indexId, 1)
+    },
   },
 })
