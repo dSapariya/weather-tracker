@@ -3,12 +3,14 @@ import { defineStore } from 'pinia'
 import { cityData } from './data'
 
 export const useCityListStore = defineStore('cityList', {
+  persist: true,
   state: () => ({
     cityList: cityData,
   }),
   actions: {
     addCity(item) {
-      this.cityList.push({ item, id: this.id++, completed: false })
+      this.cityList.push(item)
+      console.log('in add City store',this.cityList)
     },
   },
 })

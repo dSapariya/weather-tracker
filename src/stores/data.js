@@ -13,7 +13,9 @@ export const cityData =  [
         "country_id": 1269750,
         "country": "India",
         "admin1": "Gujarat",
-        "admin2": "Gandhinagar"
+        "admin2": "Gandhinagar",
+        "current_weather_units":[],
+        "current_weather":[]
       },
       {
         "id": 1264527,
@@ -30,7 +32,9 @@ export const cityData =  [
         "country_id": 1269750,
         "country": "India",
         "admin1": "Tamil Nadu",
-        "admin2": "Chennai"
+        "admin2": "Chennai",
+        "current_weather_units":[],
+        "current_weather":[]
       },
       {
         "id": 1277333,
@@ -47,6 +51,8 @@ export const cityData =  [
         "country_id": 1269750,
         "country": "India",
         "admin1": "Karnataka",
-        "admin2": "Bengaluru Urban"
+        "admin2": "Bengaluru Urban",
+        "current_weather_units":[],
+        "current_weather":[]
       }
         ]
