@@ -5,14 +5,13 @@ import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import App from './App.vue'
 import router from './router'
-// import './axios/index'
-// import './axios/api-service';
+import axios from'./axios/api-service';
 import './index.css'
 const pinia = createPinia();
 const app = createApp(App)
 pinia.use(piniaPluginPersistedstate);
 app.use(createPinia());
 app.use(pinia);
-app.use(router)
-
+app.use(router);
+app.config.globalProperties.$axios = axios;
 app.mount('#app')
