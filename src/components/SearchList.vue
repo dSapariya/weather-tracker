@@ -61,6 +61,7 @@
 import { ref, getCurrentInstance, computed } from "vue";
 import axios from "axios";
 import { useCityListStore } from "@/stores/cities";
+import moment from "moment";
 const props = defineProps({
   isShow: Boolean,
 });
@@ -70,6 +71,7 @@ const search = ref("");
 const searchList = ref([]);
 const errorMsg = ref("");
 const isLoading = ref(false);
+
 const { $axios } = getCurrentInstance().appContext.config.globalProperties;
 const isMetric = computed(() => store.getSetting);
 async function getSearchItemsByCity() {
@@ -112,14 +114,26 @@ async function getSearchCityCurrentWeather(searchCity) {
         sunset: response.data.daily.sunset[dayIndex],
         rain_sum: response.data.daily.rain_sum[dayIndex],
         precipitation_sum: response.data.daily.precipitation_sum[dayIndex],
+        weather_code: classifyWeather(response.data.daily.weather_code[dayIndex]),
+
       };
     });
     searchCity.daily_data = rearrangedData;
+    searchCity.weather_code = rearrangedData[moment().format("YYYY-MM-DD")].weather_code;
+
   });
   store.addCity(searchCity);
   emit("searchData", false);
 }
-
+function classifyWeather(weatherCode) {
+  if (weatherCode >= 0 && weatherCode <= 3) {
+    return "Sunny";
+  } else if (weatherCode >= 4 && weatherCode <= 7) {
+    return "Cloudy";
+  } else {
+    return "Rainy";
+  }
+}
 function closeSearchPopup() {
   emit("searchData", false);
 }
