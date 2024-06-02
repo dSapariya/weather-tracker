@@ -98,7 +98,7 @@
                         <div class="text-sm text-gray-500">{{ city.current_weather.windspeed }}
                           {{ city.current_weather_units.windspeed }}</div>
                       </div>
-                      <div class="flex flex-col items-center">
+                      <div class="flex flex-col items-center" v-if="precipitation_probability_max">
                         <div class="font-medium text-sm">Precipitation</div>
                         <div class="text-sm text-gray-500">{{
                             city.daily_data[moment().format("YYYY-MM-DD")][
