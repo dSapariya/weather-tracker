@@ -38,3 +38,6 @@ Pinia - for state management
 vue draggable - drag-and-drop functionality
 tailwind - for css design  
 ```
+
+### Demo
+<a href="https://dixasapariya.github.io/weather-tracker/" target="_blank">Demo</a>
