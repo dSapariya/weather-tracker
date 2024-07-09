@@ -70,8 +70,9 @@ async function getSearchItemsByCity() {
 }
 function addSelectedCity(searchCity) {
   console.log('addSelectedCity',searchCity)
-  getSearchCityCurrentWeather(searchCity);
   isExpanded.value = false;
+  getSearchCityCurrentWeather(searchCity);
+ 
 }
 
 async function getSearchCityCurrentWeather(searchCity) {

@@ -65,7 +65,7 @@
     <div v-if="cityList && cityList.length > 0">
         <div  v-for="(city, index) in cityList" class="p-4 mt-10 bg-cover h-screen flex items-center justify-center"
         :style="backgroundImageStyle">
-        <div class="p-4 w-full max-w-7xl border-none rounded-lg bg-black bg-opacity-30">
+        <div class="p-4 w-full max-w-5xl border-none rounded-lg bg-black bg-opacity-30">
             <div class="grid grid-rows-3 grid-flow-col gap-4 w-full weather-card">
 
                 <div class="w-1/2">
