@@ -15,7 +15,7 @@ export const useCityListStore = defineStore('cityList', {
   },
   actions: {
     addCity(item) {
-      this.cityList.push(item)
+      this.cityList.push(item);
     },
     deleteCity(indexId) {
       this.cityList = this.cityList.filter(item => item.uuid !== indexId);

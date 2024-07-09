@@ -224,7 +224,7 @@ const isMetric = computed(() => store.getSetting);
 const expandedCard = ref("");
 
 onMounted(async () => {
-  initFlowbite();
+  // initFlowbite();
   await getTempDetails();
 });
 function toggleCard(cityId) {
@@ -235,7 +235,8 @@ function toggleCard(cityId) {
   }
 }
 async function getTempDetails() {
-  const requests = cityList.value.map((city) => {
+  if(cityList.value.length > 0){
+    const requests = cityList.value.map((city) => {
     const { $axios } = getCurrentInstance().appContext.config.globalProperties;
     var url = "";
     if (!isMetric.value) {
@@ -270,6 +271,8 @@ async function getTempDetails() {
     console.log('weew', rearrangedData[moment().format("YYYY-MM-DD")].weather_code)
     cityList.value[index].weather_code = rearrangedData[moment().format("YYYY-MM-DD")].weather_code;
   });
+
+  }
   isLoading.value = false;
 }
 function classifyWeather(weatherCode) {

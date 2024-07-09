@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-between items-center bg-gray-800 p-4">
+  <div class="flex justify-between text-white items-center bg-gray-800 p-4">
     <div></div>
     <div>
       <a href="#" class="text-gray-800 hover:text-gray-700">
@@ -95,6 +95,7 @@ const isMetricValue = ref(false);
 
 onMounted(async () => {
   isMetricValue.value = isMetric.value;
+  console.log('in setting')
 });
 
 function changeUnit() {
