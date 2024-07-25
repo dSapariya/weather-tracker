@@ -40,4 +40,4 @@ tailwind - for css design
 ```
 
 ### Demo
-<a href="https://dixasapariya.github.io/weather-tracker/" target="_blank">Demo</a>
+<a href="https://dsapariya.github.io/weather-tracker/" target="_blank">Demo</a>
