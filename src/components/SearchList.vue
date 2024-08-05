@@ -22,7 +22,6 @@
     <div v-if="isExpanded && searchList.length > 0" class="search-results">
       <ul>
         <li  v-for="(searchCity, index) in searchList" :key="index" >
-          <!-- Display your search result details here -->
          <p  @click="addSelectedCity(searchCity)">{{ searchCity.name }},{{ searchCity.country }}</p>
         </li>
         
@@ -69,47 +68,95 @@ async function getSearchItemsByCity() {
     });
 }
 function addSelectedCity(searchCity) {
-  console.log('addSelectedCity',searchCity)
   isExpanded.value = false;
   getSearchCityCurrentWeather(searchCity);
  
 }
 
 async function getSearchCityCurrentWeather(searchCity) {
-  var url = "";
-  if (!isMetric.value) {
-    url = `?latitude=${searchCity.latitude}&longitude=${searchCity.longitude}&timezone=GMT&current_weather=true&hourly=precipitation_probability&forecast_hours=1&daily=temperature_2m_min,temperature_2m_max,sunrise,sunset,rain_sum,precipitation_sum,precipitation_probability_max,weather_code`;
-  } else {
-    url = `?latitude=${searchCity.latitude}&longitude=${searchCity.longitude}&timezone=GMT&current_weather=true&hourly=precipitation_probability&forecast_hours=1&daily=temperature_2m_min,temperature_2m_max,sunrise,sunset,rain_sum,precipitation_sum,precipitation_probability_max,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph`;
-  }
-  $axios.get(url).then((response) => {
-    searchCity.uuid = Math.random().toString(36).substr(2, 9);
-    searchCity.current_weather = response.data.current_weather;
-    searchCity.current_weather_units = response.data.current_weather_units;
-    searchCity.daily_units = response.data.daily_units;
-    const rearrangedData = {};
-    response.data.daily.time.forEach((day, dayIndex) => {
-      rearrangedData[day] = {
-        time: day,
-        precipitation_probability_max:
-          response.data.daily.precipitation_probability_max[dayIndex],
-        temperature_2m_min: response.data.daily.temperature_2m_min[dayIndex],
-        temperature_2m_max: response.data.daily.temperature_2m_max[dayIndex],
-        sunrise: response.data.daily.sunrise[dayIndex],
-        sunset: response.data.daily.sunset[dayIndex],
-        rain_sum: response.data.daily.rain_sum[dayIndex],
-        precipitation_sum: response.data.daily.precipitation_sum[dayIndex],
-        weather_code: classifyWeather(response.data.daily.weather_code[dayIndex]),
-
-      };
+  
+  let data = [searchCity];
+  const requests = data.map((city) => {
+        var url = "";
+        if (!isMetric.value) {
+            url = `?latitude=${city.latitude}&longitude=${city.longitude}&timezone=GMT&current_weather=true&hourly=temperature_2m,relative_humidity_2m,visibility,precipitation_probability,weather_code&forecast_hours=24&forecast_minutely_15=4&daily=temperature_2m_min,uv_index_max,uv_index_clear_sky_max,temperature_2m_max,sunrise,sunset,rain_sum,precipitation_sum,precipitation_probability_max,weather_code`;
+        } else {
+            url = `?latitude=${city.latitude}&longitude=${city.longitude}&timezone=GMT&current_weather=true&hourly=temperature_2m,relative_humidity_2m,visibility,precipitation_probability,weather_code&forecast_hours=24&forecast_minutely_15=4&daily=temperature_2m_min,uv_index_max,uv_index_clear_sky_max,temperature_2m_max,sunrise,sunset,rain_sum,precipitation_sum,precipitation_probability_max,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph`;
+        }
+        return $axios.get(url);
     });
-    searchCity.daily_data = rearrangedData;
-    searchCity.weather_code = rearrangedData[moment().format("YYYY-MM-DD")].weather_code;
+    const responses = await Promise.all(requests);
+    // responses.forEach((response, index) => {
+    //     data[index].uuid = Math.random().toString(36).substr(2, 9);
+    //     data[index].current_weather = response.data.current_weather;
+    //     data[index].current_weather_units = response.data.current_weather_units;
+    //     data[index].daily_units = response.data.daily_units;
+    //     const rearrangedData = {};
+    //     response.data.daily.time.forEach((day, dayIndex) => {
+    //         rearrangedData[day] = {
+    //             time: day,
+    //             precipitation_probability_max:
+    //                 response.data.daily.precipitation_probability_max[dayIndex],
+    //             temperature_2m_min: response.data.daily.temperature_2m_min[dayIndex],
+    //             temperature_2m_max: response.data.daily.temperature_2m_max[dayIndex],
+    //             sunrise: response.data.daily.sunrise[dayIndex],
+    //             sunset: response.data.daily.sunset[dayIndex],
+    //             rain_sum: response.data.daily.rain_sum[dayIndex],
+    //             precipitation_sum: response.data.daily.precipitation_sum[dayIndex],
+    //             weather_code: classifyWeather(response.data.daily.weather_code[dayIndex]),
+    //         };
+    //     });
+    //     data[index].daily_data = rearrangedData;
+    //     data[index].weather_code = rearrangedData[moment().format("YYYY-MM-DD")].weather_code;
+    // });
 
-  });
-  console.log('searchCity',searchCity)
-  store.addCity(searchCity);
+    responses.forEach((response, index) => {
+        data[index].uuid = Math.random().toString(36).substr(2, 9);
+        data[index].current_weather = response.data.current_weather;
+        data[index].current_weather_units = response.data.current_weather_units;
+        data[index].daily_units = response.data.daily_units;
+        const rearrangedData = {};
+        response.data.daily.time.forEach((day, dayIndex) => {
+            rearrangedData[day] = {
+                time: day,
+                precipitation_probability_max:
+                    response.data.daily.precipitation_probability_max[dayIndex],
+                temperature_2m_min: response.data.daily.temperature_2m_min[dayIndex],
+                temperature_2m_max: response.data.daily.temperature_2m_max[dayIndex],
+                sunrise: response.data.daily.sunrise[dayIndex],
+                sunset: response.data.daily.sunset[dayIndex],
+                rain_sum: response.data.daily.rain_sum[dayIndex],
+                precipitation_sum: response.data.daily.precipitation_sum[dayIndex],
+                weather_code: classifyWeather(response.data.daily.weather_code[dayIndex]),
+            };
+        });
+        data[index].uv_index_max = response.data.daily.uv_index_max.length > 0 ? response.data.daily.uv_index_max[0] : 0;
+        const rearrangedDataHours = {};
+        response.data.hourly.time.forEach((hours, hoursIndex) => {
+            const dateTime = moment(hours, 'YYYY-MM-DDTHH:mm');
+            const now = moment();
+            const todayDate = now.format('YYYY-MM-DD'); 
+            const curr = dateTime.format('YYYY-MM-DD'); 
+            if(todayDate == curr){
+                rearrangedDataHours[dateTime.format('HH:mm')] = {
+                time:  dateTime.format('HH:mm'),
+                temperature_2m: response.data.hourly.temperature_2m[hoursIndex],
+                weather_code: classifyWeather(response.data.hourly.weather_code[hoursIndex]),
+            };
+            }
+         
+        });
+        data[index].hourly_data = response.data.hourly
+        data[index].hourly_units = response.data.hourly_units
+        data[index].daily_data = rearrangedData;
+        data[index].per_hour_data = rearrangedDataHours;
+        data[index].weather_code = rearrangedData[moment().format("YYYY-MM-DD")].weather_code;
+    });
+
   isExpanded.value = false;
+  search.value = ''
+  store.addCity(searchCity);
+ 
 }
 function classifyWeather(weatherCode) {
   if (weatherCode >= 0 && weatherCode <= 3) {
