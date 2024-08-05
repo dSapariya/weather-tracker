@@ -143,7 +143,6 @@
                                             <div class="row-span-3 w-full h-full flex flex-col items-start justify-start rounded bg-opacity-0"
                                                 style="background-color: rgba(0, 0, 0, 0.1);">
                                                 <div class="grid grid-rows-1 grid-flow-col gap-4 w-full">
-
                                                     <div
                                                         class="flex gap-5 overflow-x-auto scroll-smooth w-full card-scroll ">
                                                         <div v-for="(hours, hoursIndex) in city.per_hour_data"
@@ -188,18 +187,15 @@
 
                                                                 </div>
                                                             </div>
-
-
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-span-2 mt-5">
                                 <div class="flex flex-col h-42 rounded text-white items-start p-2"
                                     style="background-color: rgba(0, 0, 0, 0.6);">
@@ -211,8 +207,6 @@
                                                 stroke-width="2"
                                                 d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z" />
                                         </svg>
-
-
                                         <h1 class="text-1xl uppercase">Weekly forecast</h1>
                                     </div>
                                     <div class="flex flex-col w-full h-full">
@@ -221,58 +215,65 @@
                                                 style="background-color: rgba(0, 0, 0, 0.1);">
                                                 <div class="grid grid-rows-1 grid-flow-col gap-4 w-full">
 
-                                                    <div class="flex gap-5 overflow-x-auto w-full card-scroll">
+                                                    <div
+                                                        class="flex gap-5 overflow-x-auto scroll-smooth w-full card-scroll">
                                                         <div v-for="(week, weekIndex) in city.daily_data"
                                                             :key="weekIndex"
-                                                            class="flex flex-col w-full items-center text-center  rounded-lg bg-black bg-opacity-50 mt-2 p-2"
+                                                            class="hover:bg-gray-700 flex flex-col w-full justify-start items-center"
                                                             style="background-color: rgba(0, 0, 0, 0.8);">
 
-                                                            <div class="hover:bg-gray-700 rounded-lg mt-2 p-2 "></div>
-                                                            <div class="flex justify-start items-center gap-2">
+                                                            <div
+                                                                class="hover:bg-gray-700 rounded-lg bg-black bg-opacity-50 mt-2 p-2">
+                                                                <div class="flex justify-start items-center gap-2">
+
+                                                                    <div>
+                                                                        <h1 class="text-xs">{{
+                                                                            moment(week.time).format("ddd") }}</h1>
+                                                                        <span class="text-xs">{{
+                                                                            moment(week.time).format("DD") }}/{{
+                                                                                moment(week.time).format("MM")
+                                                                            }}</span>
+                                                                    </div>
+                                                                </div>
 
                                                                 <div>
-                                                                    <h1 class="text-xs">{{
-                                                                        moment(week.time).format("ddd") }}</h1>
-                                                                    <span class="text-xs">{{
-                                                                        moment(week.time).format("DD") }}/{{
-                                                                            moment(week.time).format("MM")
-                                                                        }}</span>
+                                                                    <span class="text-xs">{{ week.temperature_2m_max }}
+                                                                        {{ city.daily_units.temperature_2m_max }}</span>
+                                                                </div>
+                                                                <div>
+                                                                    <span class="text-xs">{{ week.rain_sum }} {{
+                                                                        city.daily_units.rain_sum }}</span>
+                                                                </div>
+
+                                                                <div class="mt-2">
+
+
+
+                                                                    <svg v-if="week.weather_code == 'Rainy'"
+                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24">
+                                                                        <path fill="currentColor"
+                                                                            d="M13.95 21.9q-.375.2-.762.063t-.588-.513l-1.5-3q-.2-.375-.062-.762t.512-.588t.763-.062t.587.512l1.5 3q.2.375.063.763t-.513.587m6 0q-.375.2-.762.063t-.588-.513l-1.5-3q-.2-.375-.062-.762t.512-.588t.763-.062t.587.512l1.5 3q.2.375.063.763t-.513.587m-12 0q-.375.2-.762.063T6.6 21.45l-1.5-3q-.2-.375-.062-.762t.512-.588t.763-.062t.587.512l1.5 3q.2.375.063.763t-.513.587M7.5 16q-2.275 0-3.887-1.612T2 10.5q0-2.075 1.375-3.625t3.4-1.825q.8-1.425 2.188-2.238T12 2q2.25 0 3.913 1.438t2.012 3.587q1.725.15 2.9 1.425T22 11.5q0 1.875-1.312 3.188T17.5 16z" />
+                                                                    </svg>
+                                                                    <svg v-if="week.weather_code == 'Sunny'"
+                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 512 512">
+                                                                        <path fill="currentColor"
+                                                                            d="M340 480H106c-29.5 0-54.92-7.83-73.53-22.64C11.23 440.44 0 415.35 0 384.8c0-26.66 10.08-49.8 29.14-66.91c15.24-13.68 36.17-23.21 59-26.84c.06 0 .08 0 .09-.05c6.44-39 23.83-72.09 50.31-95.68A140.24 140.24 0 0 1 232 160c30.23 0 58.48 9.39 81.71 27.17a142.7 142.7 0 0 1 45.36 60.66c29.41 4.82 54.72 17.11 73.19 35.54C453 304.11 464 331.71 464 363.2c0 32.85-13.13 62.87-37 84.52c-22.89 20.82-53.8 32.28-87 32.28m41.5-260.11a169.2 169.2 0 0 1 45.44 19A96 96 0 0 0 281 129.33q-2.85 2-5.54 4.2a162.5 162.5 0 0 1 57.73 28.23a174.5 174.5 0 0 1 48.31 58.13M448 192h64v32h-64zM320 32h32v64h-32zm-64.65 97.63l12.45-12.45l-44.62-44.63l-22.63 22.63l33.17 33.17h.6a172 172 0 0 1 21.03 1.28m148.853-12.46l44.626-44.625l22.627 22.627l-44.625 44.626z" />
+                                                                    </svg>
+                                                                    <svg v-if="week.weather_code == 'Cloudy'"
+                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24">
+                                                                        <g fill="none">
+                                                                            <path
+                                                                                d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
+                                                                            <path fill="currentColor"
+                                                                                d="M11 6a6 6 0 0 1 5.703 4.132a5.502 5.502 0 0 1-.982 10.864L15.5 21h-9a4.5 4.5 0 0 1-1.495-8.746A6 6 0 0 1 11 6m5-3a6 6 0 0 1 5.09 9.18a6.52 6.52 0 0 0-3.63-2.88a7 7 0 0 0-5.949-4.282A6 6 0 0 1 16.002 3Z" />
+                                                                        </g>
+                                                                    </svg>
+
                                                                 </div>
                                                             </div>
-                                                            <span class="text-xs">{{ week.temperature_2m_max }}
-                                                                {{ city.daily_units.temperature_2m_max }}</span>
-
-                                                            <span class="text-xs">{{ week.rain_sum }} {{
-                                                                city.daily_units.rain_sum }}</span>
-                                                            <div class="mt-2">
-
-
-
-                                                                <svg v-if="week.weather_code == 'Rainy'"
-                                                                    xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24">
-                                                                    <path fill="currentColor"
-                                                                        d="M13.95 21.9q-.375.2-.762.063t-.588-.513l-1.5-3q-.2-.375-.062-.762t.512-.588t.763-.062t.587.512l1.5 3q.2.375.063.763t-.513.587m6 0q-.375.2-.762.063t-.588-.513l-1.5-3q-.2-.375-.062-.762t.512-.588t.763-.062t.587.512l1.5 3q.2.375.063.763t-.513.587m-12 0q-.375.2-.762.063T6.6 21.45l-1.5-3q-.2-.375-.062-.762t.512-.588t.763-.062t.587.512l1.5 3q.2.375.063.763t-.513.587M7.5 16q-2.275 0-3.887-1.612T2 10.5q0-2.075 1.375-3.625t3.4-1.825q.8-1.425 2.188-2.238T12 2q2.25 0 3.913 1.438t2.012 3.587q1.725.15 2.9 1.425T22 11.5q0 1.875-1.312 3.188T17.5 16z" />
-                                                                </svg>
-                                                                <svg v-if="week.weather_code == 'Sunny'"
-                                                                    xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 512 512">
-                                                                    <path fill="currentColor"
-                                                                        d="M340 480H106c-29.5 0-54.92-7.83-73.53-22.64C11.23 440.44 0 415.35 0 384.8c0-26.66 10.08-49.8 29.14-66.91c15.24-13.68 36.17-23.21 59-26.84c.06 0 .08 0 .09-.05c6.44-39 23.83-72.09 50.31-95.68A140.24 140.24 0 0 1 232 160c30.23 0 58.48 9.39 81.71 27.17a142.7 142.7 0 0 1 45.36 60.66c29.41 4.82 54.72 17.11 73.19 35.54C453 304.11 464 331.71 464 363.2c0 32.85-13.13 62.87-37 84.52c-22.89 20.82-53.8 32.28-87 32.28m41.5-260.11a169.2 169.2 0 0 1 45.44 19A96 96 0 0 0 281 129.33q-2.85 2-5.54 4.2a162.5 162.5 0 0 1 57.73 28.23a174.5 174.5 0 0 1 48.31 58.13M448 192h64v32h-64zM320 32h32v64h-32zm-64.65 97.63l12.45-12.45l-44.62-44.63l-22.63 22.63l33.17 33.17h.6a172 172 0 0 1 21.03 1.28m148.853-12.46l44.626-44.625l22.627 22.627l-44.625 44.626z" />
-                                                                </svg>
-                                                                <svg v-if="week.weather_code == 'Cloudy'"
-                                                                    xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24">
-                                                                    <g fill="none">
-                                                                        <path
-                                                                            d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
-                                                                        <path fill="currentColor"
-                                                                            d="M11 6a6 6 0 0 1 5.703 4.132a5.502 5.502 0 0 1-.982 10.864L15.5 21h-9a4.5 4.5 0 0 1-1.495-8.746A6 6 0 0 1 11 6m5-3a6 6 0 0 1 5.09 9.18a6.52 6.52 0 0 0-3.63-2.88a7 7 0 0 0-5.949-4.282A6 6 0 0 1 16.002 3Z" />
-                                                                    </g>
-                                                                </svg>
-
-                                                            </div>
-
                                                         </div>
 
                                                     </div>
