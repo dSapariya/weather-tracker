@@ -59,7 +59,7 @@
                                                         <h1 class="text-1xl uppercase">Precipitation</h1>
                                                     </div>
                                                 </div>
-                                                <span class="text-3xl">{{
+                                                <span class="text-3xl" v-if="city.daily_data">{{
                                                     city.daily_data[moment().format("YYYY-MM-DD")][
                                                     "precipitation_probability_max"
                                                     ]
@@ -399,7 +399,7 @@ import { useCityListStore } from "@/stores/cities";
 import SearchList from "../components/SearchList.vue";
 import Setting from "../components/UnitSetting.vue";
 import { storeToRefs } from "pinia";
-import moment from "moment";
+import moment from "moment-timezone";
 import slider from "vue3-slider"
 const store = useCityListStore();
 const { cityList, isMetric } = storeToRefs(store);
@@ -448,12 +448,13 @@ async function getDefaultData() {
         const rearrangedDataHours = {};
         response.data.hourly.time.forEach((hours, hoursIndex) => {
             const dateTime = moment(hours, 'YYYY-MM-DDTHH:mm');
+            const dateTimeIST = dateTime.tz('Asia/Kolkata');
             const now = moment();
             const todayDate = now.format('YYYY-MM-DD');
             const curr = dateTime.format('YYYY-MM-DD');
-            if (todayDate == curr) {
-                rearrangedDataHours[dateTime.format('HH:mm')] = {
-                    time: dateTime.format('HH:mm'),
+            if (todayDate == curr && now.format('HH') < dateTime.format('HH')) {
+                rearrangedDataHours[dateTimeIST.format('HH:mm')] = {
+                    time: dateTimeIST.format('HH:mm'),
                     temperature_2m: response.data.hourly.temperature_2m[hoursIndex],
                     weather_code: classifyWeather(response.data.hourly.weather_code[hoursIndex]),
                 };
@@ -486,12 +487,13 @@ function classifyWeather(weatherCode) {
 
 .card-scroll {
     scrollbar-width: none;
+    scrollbar-color: #888 #f1f1f1;
+    
 }
 
 .hover-card {
     transition: background-color 0.3s;
 }
-
 .hover-card:hover {
     background-color: rgba(255, 255, 255, 0.2);
     /* Change this to your desired color */

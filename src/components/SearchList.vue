@@ -40,7 +40,7 @@
 import { ref, getCurrentInstance, computed } from "vue";
 import axios from "axios";
 import { useCityListStore } from "@/stores/cities";
-import moment from "moment";
+import moment from "moment-timezone";
 
 const emit = defineEmits(["searchData"]);
 const store = useCityListStore();
@@ -134,17 +134,18 @@ async function getSearchCityCurrentWeather(searchCity) {
         const rearrangedDataHours = {};
         response.data.hourly.time.forEach((hours, hoursIndex) => {
             const dateTime = moment(hours, 'YYYY-MM-DDTHH:mm');
+            const dateTimeIST = dateTime.tz('Asia/Kolkata');
             const now = moment();
-            const todayDate = now.format('YYYY-MM-DD'); 
-            const curr = dateTime.format('YYYY-MM-DD'); 
-            if(todayDate == curr){
-                rearrangedDataHours[dateTime.format('HH:mm')] = {
-                time:  dateTime.format('HH:mm'),
-                temperature_2m: response.data.hourly.temperature_2m[hoursIndex],
-                weather_code: classifyWeather(response.data.hourly.weather_code[hoursIndex]),
-            };
+            const todayDate = now.format('YYYY-MM-DD');
+            const curr = dateTime.format('YYYY-MM-DD');
+            if (todayDate == curr && now.format('HH') < dateTime.format('HH')) {
+                rearrangedDataHours[dateTimeIST.format('HH:mm')] = {
+                    time: dateTimeIST.format('HH:mm'),
+                    temperature_2m: response.data.hourly.temperature_2m[hoursIndex],
+                    weather_code: classifyWeather(response.data.hourly.weather_code[hoursIndex]),
+                };
             }
-         
+
         });
         data[index].hourly_data = response.data.hourly
         data[index].hourly_units = response.data.hourly_units
