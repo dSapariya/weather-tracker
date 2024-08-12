@@ -6,14 +6,14 @@
             <div v-for="(city, index) in cityList"
                 class="p-4 bg-cover h-auto md:h-screen flex items-center justify-center"
                 :style="{ 'background-image': city.bg_image }">
-                <div class="p-4 w-full max-w-5xl border-none rounded-lg bg-black bg-opacity-30 mt-10">
+                <div class="p-4 w-full max-w-5xl border-none rounded-xl bg-black bg-opacity-30 mt-10">
 
                     <div
-                        class="grid grid-rows-3 grid-flow-col gap-4 w-full sm:flex sm:flex-col sm:items-center sm:h-[100vh] sm:overflow-y-scroll sm:scroll-smooth md:flex-row md:h-auto md:overflow-auto">
+                        class="grid grid-rows-2 grid-flow-col gap-4 w-full sm:flex sm:flex-col sm:items-center sm:h-[100vh] sm:overflow-y-scroll sm:scroll-smooth md:flex-row md:h-auto md:overflow-auto">
 
                         <div class="w-full sm:w-1/2">
-                            <div class="row-span-3 w-full h-full flex flex-col items-start justify-start rounded bg-opacity-0"
-                                style="background-color: rgba(0, 0, 0, 0.1);">
+                            <div
+                                class="row-span-3 w-full h-full flex flex-col items-start justify-start rounded-xl bg-opacity-0">
                                 <div class="relative w-full">
 
                                     <SearchList :isShow="true" />
@@ -30,8 +30,8 @@
                                     <span class="text-2xl">{{ city.name }}</span>
                                     <div class="h-2/2">
                                         <div class=" flex gap-4 mt-4 w-full">
-                                            <div class="flex flex-col w-full  rounded-lg bg-black bg-opacity-50 p-2"
-                                                style="background-color: rgba(0, 0, 0, 0.6);">
+                                            <div class="flex flex-col w-full  rounded-xl bg-black bg-opacity-50 p-4"
+                                                style="background-color: rgba(0, 0, 0, 0.6);border-bottom:1px solid white;;">
                                                 <div class="flex justify-start items-center gap-2">
                                                     <div>
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -49,8 +49,8 @@
                                                 <span class="text-3xl">30</span>
                                                 <p class="text-xs mt-5">Humidity is making feel warmer</p>
                                             </div>
-                                            <div class="flex flex-col w-full  rounded-lg bg-black bg-opacity-50 p-2"
-                                                style="background-color: rgba(0, 0, 0, 0.6);">
+                                            <div class="flex flex-col w-full  rounded-xl bg-black bg-opacity-50 p-2"
+                                                style="background-color: rgba(0, 0, 0, 0.6);border-bottom:1px solid white;;">
                                                 <div class="flex justify-start items-center gap-2">
                                                     <div>
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -67,13 +67,18 @@
                                                     city.daily_data[moment().format("YYYY-MM-DD")][
                                                     "precipitation_probability_max"
                                                     ]
-                                                }} {{ city.daily_units.precipitation_probability_max }}</span>
-                                                <p class="text-xs mt-5">Humidity is making feel warmer</p>
+                                                }}{{ city.daily_units.precipitation_probability_max }}</span>
+                                                <p class="text-xs mt-5">{{
+                                                    city.daily_data[moment().format("YYYY-MM-DD")][
+                                                    "precipitation_probability_max"
+                                                    ]
+                                                }}{{ city.daily_units.precipitation_probability_max }} expected in
+                                                    last 24 hrs</p>
                                             </div>
                                         </div>
                                         <div class=" flex gap-4 mt-4 w-full">
-                                            <div class="flex flex-col w-full  rounded-lg bg-black bg-opacity-50 p-2"
-                                                style="background-color: rgba(0, 0, 0, 0.6);">
+                                            <div class="flex flex-col w-full  rounded-xl bg-black bg-opacity-50 p-2"
+                                                style="background-color: rgba(0, 0, 0, 0.6);border-bottom:1px solid white;; ">
                                                 <div class="flex justify-start items-center gap-2">
                                                     <div>
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -90,10 +95,10 @@
                                                     city.hourly_data.visibility && city.hourly_data.visibility[0] }}
                                                     {{ city.hourly_units && city.hourly_units.visibility &&
                                                         city.hourly_units.visibility }}</span>
-                                                <!-- <p class="text-xs mt-5">Humidity is making feel warmer</p> -->
+                                                <p class="text-xs mt-5">Perfectly clear view</p>
                                             </div>
-                                            <div class="flex flex-col w-full  rounded-lg bg-black bg-opacity-50 p-2"
-                                                style="background-color: rgba(0, 0, 0, 0.6);">
+                                            <div class="flex flex-col w-full  rounded-xl bg-black bg-opacity-50 p-2"
+                                                style="background-color: rgba(0, 0, 0, 0.6); border-bottom:1px solid white;;">
                                                 <div class="flex justify-start items-center gap-2">
                                                     <div>
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -129,8 +134,8 @@
 
                         <div class="w-full sm:w-full">
                             <div class="col-span-2">
-                                <div class="flex flex-col h-42 rounded text-white items-start p-2"
-                                    style="background-color: rgba(0, 0, 0, 0.6);">
+                                <div class="flex flex-col h-42 rounded-xl text-white items-start p-2"
+                                    style="background-color: rgba(0, 0, 0, 0.6); border-bottom:1px solid white;;">
                                     <div class="flex">
                                         <svg class="text-white w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -142,16 +147,17 @@
 
                                         <h1 class="text-1xl uppercase">hourly forcast</h1>
                                     </div>
+                                    
                                     <div class="flex flex-col w-full h-full">
                                         <div class="grid grid-rows-1 grid-cols-1 gap-4 w-full h-full">
                                             <div
-                                                class="row-span-3 w-full h-full flex flex-col items-start justify-start rounded bg-opacity-0">
+                                                class="row-span-3 w-full h-full flex flex-col items-start justify-start rounded-xl bg-opacity-0">
                                                 <div class="grid grid-rows-1 grid-flow-col gap-4 w-full">
                                                     <div
                                                         class="flex gap-5 overflow-x-auto scroll-smooth w-full card-scroll">
                                                         <div v-for="(hours, hoursIndex) in city.per_hour_data"
                                                             class="flex flex-col w-full justify-start items-center">
-                                                            <div class="hover:bg-gray-700 rounded-lg m-2 p-2"
+                                                            <div class="hover:bg-gray-700 rounded-xl m-2 p-2"
                                                                 style="width: max-content;">
                                                                 <div class="flex justify-start items-center gap-2 ">
 
@@ -363,8 +369,8 @@
                             </div>
 
                             <div class="col-span-2 mt-5">
-                                <div class="flex flex-col h-42 rounded text-white items-start p-2"
-                                    style="background-color: rgba(0, 0, 0, 0.6);">
+                                <div class="flex flex-col h-42 rounded-xl text-white items-start p-2"
+                                    style="background-color: rgba(0, 0, 0, 0.6);border-bottom:1px solid white;">
                                     <div class="flex ">
                                         <svg class="w-6 h-6 text-gray-800 text-white me-1" aria-hidden="true"
                                             xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -379,7 +385,7 @@
                                     <div class="flex flex-col w-full h-full">
                                         <div class="grid grid-rows-1 grid-cols-1 gap-4 w-full h-full">
                                             <div
-                                                class="row-span-3 w-full h-full flex flex-col items-start justify-start rounded bg-opacity-0">
+                                                class="row-span-3 w-full h-full flex flex-col items-start justify-start rounded-xl bg-opacity-0">
                                                 <div class="grid grid-rows-1 grid-flow-col gap-4 w-full">
 
                                                     <div
@@ -388,7 +394,7 @@
                                                             :key="weekIndex"
                                                             class="flex flex-col w-full justify-start items-center">
 
-                                                            <div class="hover:bg-gray-700 rounded-lg px-4 py-1 mt-2"
+                                                            <div class="hover:bg-gray-700 rounded-xl px-4 py-1 mt-2"
                                                                 style="width: max-content;">
                                                                 <div class="flex justify-start items-center gap-2">
 
@@ -592,8 +598,8 @@
                                     <div class=" flex gap-4 mt-4 w-full text-white">
 
 
-                                        <div class="flex flex-col w-full  rounded-lg bg-black bg-opacity-50 p-2"
-                                            style="background-color: rgba(0, 0, 0, 0.6);">
+                                        <div class="flex flex-col w-full  rounded-xl bg-black bg-opacity-50 p-2"
+                                            style="background-color: rgba(0, 0, 0, 0.6);border-bottom:1px solid white;;">
                                             <div class="flex justify-between align-items-flex-start gap-2">
 
                                                 <div class="flex flex-col gap-2">
@@ -614,9 +620,11 @@
                                                     <div class="flex-col">
                                                         <span class="text-3xl">{{ city.uv_index_max }}</span>
                                                     </div>
-                                                    <span v-if=" city.uv_index_max > 0 &&  city.uv_index_max <=4 ">Moderate</span>
-                                                    <span v-if=" city.uv_index_max > 4 &&  city.uv_index_max <=7 ">High</span>
-                                                    <span v-if=" city.uv_index_max > 7">Extreme Risk</span>
+                                                    <span
+                                                        v-if="city.uv_index_max > 0 && city.uv_index_max <= 4">Moderate</span>
+                                                    <span
+                                                        v-if="city.uv_index_max > 4 && city.uv_index_max <= 7">High</span>
+                                                    <span v-if="city.uv_index_max > 7">Extreme Risk</span>
                                                 </div>
                                                 <div>
                                                     <!-- <svg xmlns="http://www.w3.org/2000/svg" width="84" height="24"
@@ -631,8 +639,8 @@
                                                 max="10" min="0" />
 
                                         </div>
-                                        <div class="flex flex-col w-full  rounded-lg bg-black bg-opacity-50 p-2"
-                                            style="background-color: rgba(0, 0, 0, 0.6);">
+                                        <div class="flex flex-col w-full  rounded-xl bg-black bg-opacity-50 p-2"
+                                            style="background-color: rgba(0, 0, 0, 0.6);border-bottom:1px solid white;;">
                                             <div class="flex justify-between align-items-flex-start gap-2">
 
                                                 <div class="flex flex-col gap-2">
