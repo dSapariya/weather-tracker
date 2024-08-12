@@ -11,26 +11,21 @@
       </svg>
 
     </div>
-    <input
-        type="text"
-        v-model="search"
-        @input="getSearchItemsByCity()"
-        placeholder="Search by cities..."
-        class="search-box bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-    />
-  
+    <input type="text" v-model="search" @input="getSearchItemsByCity()" placeholder="Search by cities..."
+      class="search-box bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+
     <div v-if="isExpanded && searchList.length > 0" class="search-results">
       <ul>
-        <li  v-for="(searchCity, index) in searchList" :key="index" >
-         <p  @click="addSelectedCity(searchCity)">{{ searchCity.name }},{{ searchCity.country }}</p>
+        <li v-for="(searchCity, index) in searchList" :key="index">
+          <p @click="addSelectedCity(searchCity)">{{ searchCity.name }},{{ searchCity.country }}</p>
         </li>
-        
+
       </ul>
       <ul class="mt-4">
-    
 
-       
-       
+
+
+
       </ul>
     </div>
   </div>
@@ -41,7 +36,11 @@ import { ref, getCurrentInstance, computed } from "vue";
 import axios from "axios";
 import { useCityListStore } from "@/stores/cities";
 import moment from "moment-timezone";
-
+import imagePath from '@/assets/images/rainy.jpg';
+import imageSunnyPath from '@/assets/images/Sunny.jpg';
+import imageCloudyPath from '@/assets/images/Cloudy.jpg';
+import imageThunderstormsPath from '@/assets/images/Thunderstorms.jpg';
+import imageSnowyPath from "@/assets/images/Snowy.avif";
 const emit = defineEmits(["searchData"]);
 const store = useCityListStore();
 const search = ref("");
@@ -64,119 +63,148 @@ async function getSearchItemsByCity() {
         response.data && response.data.results ? response.data.results : [];
       searchList.value.length == 0 ? (errorMsg.value = "Data Not Found...") : "";
       isLoading.value = false;
-      
+
     });
 }
 function addSelectedCity(searchCity) {
   isExpanded.value = false;
   getSearchCityCurrentWeather(searchCity);
- 
+
 }
 
 async function getSearchCityCurrentWeather(searchCity) {
-  
+
   let data = [searchCity];
   const requests = data.map((city) => {
-        var url = "";
-        if (!isMetric.value) {
-            url = `?latitude=${city.latitude}&longitude=${city.longitude}&timezone=GMT&current_weather=true&hourly=temperature_2m,relative_humidity_2m,visibility,precipitation_probability,weather_code&forecast_hours=24&forecast_minutely_15=4&daily=temperature_2m_min,uv_index_max,uv_index_clear_sky_max,temperature_2m_max,sunrise,sunset,rain_sum,precipitation_sum,precipitation_probability_max,weather_code`;
-        } else {
-            url = `?latitude=${city.latitude}&longitude=${city.longitude}&timezone=GMT&current_weather=true&hourly=temperature_2m,relative_humidity_2m,visibility,precipitation_probability,weather_code&forecast_hours=24&forecast_minutely_15=4&daily=temperature_2m_min,uv_index_max,uv_index_clear_sky_max,temperature_2m_max,sunrise,sunset,rain_sum,precipitation_sum,precipitation_probability_max,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph`;
+    var url = "";
+    isMetric.value = false
+    if (!isMetric.value) {
+      
+      url = `?latitude=${city.latitude}&longitude=${city.longitude}&timezone=GMT&current_weather=true&hourly=temperature_2m,relative_humidity_2m,visibility,precipitation_probability,weather_code&forecast_hours=24&forecast_minutely_15=4&daily=temperature_2m_min,uv_index_max,uv_index_clear_sky_max,temperature_2m_max,sunrise,sunset,rain_sum,precipitation_sum,precipitation_probability_max,weather_code`;
+    } else {
+      url = `?latitude=${city.latitude}&longitude=${city.longitude}&timezone=GMT&current_weather=true&hourly=temperature_2m,relative_humidity_2m,visibility,precipitation_probability,weather_code&forecast_hours=24&forecast_minutely_15=4&daily=temperature_2m_min,uv_index_max,uv_index_clear_sky_max,temperature_2m_max,sunrise,sunset,rain_sum,precipitation_sum,precipitation_probability_max,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph`;
+    }
+    return $axios.get(url);
+  });
+  const responses = await Promise.all(requests);
+  responses.forEach((response, index) => {
+    data[index].uuid = Math.random().toString(36).substr(2, 9);
+    data[index].current_weather = response.data.current_weather;
+    data[index].current_weather_units = response.data.current_weather_units;
+    data[index].daily_units = response.data.daily_units;
+    const rearrangedData = {};
+    response.data.daily.time.forEach((day, dayIndex) => {
+      rearrangedData[day] = {
+        time: day,
+        precipitation_probability_max:
+          response.data.daily.precipitation_probability_max[dayIndex],
+        temperature_2m_min: response.data.daily.temperature_2m_min[dayIndex],
+        temperature_2m_max: response.data.daily.temperature_2m_max[dayIndex],
+        sunrise: response.data.daily.sunrise[dayIndex],
+        sunset: response.data.daily.sunset[dayIndex],
+        rain_sum: response.data.daily.rain_sum[dayIndex],
+        precipitation_sum: response.data.daily.precipitation_sum[dayIndex],
+        weather_code: classifyWeather(response.data.daily.weather_code[dayIndex]),
+      };
+    });
+    data[index].uv_index_max = response.data.daily.uv_index_max.length > 0 ? response.data.daily.uv_index_max[0] : 0;
+    const rearrangedDataHours = {};
+    response.data.hourly.time.forEach((hours, hoursIndex) => {
+      const dateTime = moment(hours, 'YYYY-MM-DDTHH:mm');
+      const dateTimeIST = dateTime.tz('Asia/Kolkata');
+      const now = moment();
+      const todayDate = now.format('YYYY-MM-DD');
+      const curr = dateTime.format('YYYY-MM-DD');
+      if (todayDate == curr && now.format('HH') < dateTime.format('HH')) {
+        rearrangedDataHours[dateTimeIST.format('HH:mm')] = {
+          time: dateTimeIST.format('HH:mm'),
+          temperature_2m: response.data.hourly.temperature_2m[hoursIndex],
+          weather_code: classifyWeather(response.data.hourly.weather_code[hoursIndex]),
+        };
+      }
+
+    });
+    data[index].hourly_data = response.data.hourly
+    data[index].hourly_units = response.data.hourly_units
+    data[index].daily_data = rearrangedData;
+    data[index].per_hour_data = rearrangedDataHours;
+    data[index].weather_code = rearrangedData[moment().format("YYYY-MM-DD")].weather_code;
+
+
+    if (rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Rainy' || rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Light Rainy' || rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Moderate Rainy' || rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Heavy Rainy') {
+            data[index].bg_image = `url(${imagePath})`
         }
-        return $axios.get(url);
-    });
-    const responses = await Promise.all(requests);
-    // responses.forEach((response, index) => {
-    //     data[index].uuid = Math.random().toString(36).substr(2, 9);
-    //     data[index].current_weather = response.data.current_weather;
-    //     data[index].current_weather_units = response.data.current_weather_units;
-    //     data[index].daily_units = response.data.daily_units;
-    //     const rearrangedData = {};
-    //     response.data.daily.time.forEach((day, dayIndex) => {
-    //         rearrangedData[day] = {
-    //             time: day,
-    //             precipitation_probability_max:
-    //                 response.data.daily.precipitation_probability_max[dayIndex],
-    //             temperature_2m_min: response.data.daily.temperature_2m_min[dayIndex],
-    //             temperature_2m_max: response.data.daily.temperature_2m_max[dayIndex],
-    //             sunrise: response.data.daily.sunrise[dayIndex],
-    //             sunset: response.data.daily.sunset[dayIndex],
-    //             rain_sum: response.data.daily.rain_sum[dayIndex],
-    //             precipitation_sum: response.data.daily.precipitation_sum[dayIndex],
-    //             weather_code: classifyWeather(response.data.daily.weather_code[dayIndex]),
-    //         };
-    //     });
-    //     data[index].daily_data = rearrangedData;
-    //     data[index].weather_code = rearrangedData[moment().format("YYYY-MM-DD")].weather_code;
-    // });
+        else if (rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Sunny' || rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Mostly Sunny') {
+            data[index].bg_image = `url(${imageSunnyPath})`
 
-    responses.forEach((response, index) => {
-        data[index].uuid = Math.random().toString(36).substr(2, 9);
-        data[index].current_weather = response.data.current_weather;
-        data[index].current_weather_units = response.data.current_weather_units;
-        data[index].daily_units = response.data.daily_units;
-        const rearrangedData = {};
-        response.data.daily.time.forEach((day, dayIndex) => {
-            rearrangedData[day] = {
-                time: day,
-                precipitation_probability_max:
-                    response.data.daily.precipitation_probability_max[dayIndex],
-                temperature_2m_min: response.data.daily.temperature_2m_min[dayIndex],
-                temperature_2m_max: response.data.daily.temperature_2m_max[dayIndex],
-                sunrise: response.data.daily.sunrise[dayIndex],
-                sunset: response.data.daily.sunset[dayIndex],
-                rain_sum: response.data.daily.rain_sum[dayIndex],
-                precipitation_sum: response.data.daily.precipitation_sum[dayIndex],
-                weather_code: classifyWeather(response.data.daily.weather_code[dayIndex]),
-            };
-        });
-        data[index].uv_index_max = response.data.daily.uv_index_max.length > 0 ? response.data.daily.uv_index_max[0] : 0;
-        const rearrangedDataHours = {};
-        response.data.hourly.time.forEach((hours, hoursIndex) => {
-            const dateTime = moment(hours, 'YYYY-MM-DDTHH:mm');
-            const dateTimeIST = dateTime.tz('Asia/Kolkata');
-            const now = moment();
-            const todayDate = now.format('YYYY-MM-DD');
-            const curr = dateTime.format('YYYY-MM-DD');
-            if (todayDate == curr && now.format('HH') < dateTime.format('HH')) {
-                rearrangedDataHours[dateTimeIST.format('HH:mm')] = {
-                    time: dateTimeIST.format('HH:mm'),
-                    temperature_2m: response.data.hourly.temperature_2m[hoursIndex],
-                    weather_code: classifyWeather(response.data.hourly.weather_code[hoursIndex]),
-                };
-            }
+        }
+        else if (rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Partly Cloudy' || rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Mostly Cloudy' || rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Cloudy') {
+            data[index].bg_image = `url(${imageCloudyPath})`
 
-        });
-        data[index].hourly_data = response.data.hourly
-        data[index].hourly_units = response.data.hourly_units
-        data[index].daily_data = rearrangedData;
-        data[index].per_hour_data = rearrangedDataHours;
-        data[index].weather_code = rearrangedData[moment().format("YYYY-MM-DD")].weather_code;
-    });
+        }
+        else if (rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Thunderstorms' ) {
+            data[index].bg_image = `url(${imageThunderstormsPath})`
+
+        }
+        else if (rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Snowy') {
+            data[index].bg_image = `url(${imageSnowyPath})`
+
+        }
+        else {
+            data[index].bg_image = `url(${imagePath})`
+        }
+
+  });
 
   isExpanded.value = false;
   search.value = ''
   store.addCity(searchCity);
- 
+
 }
 function classifyWeather(weatherCode) {
-  if (weatherCode >= 0 && weatherCode <= 3) {
+  if (weatherCode >= 0 && weatherCode <= 1) {
     return "Sunny";
-  } else if (weatherCode >= 4 && weatherCode <= 7) {
-    return "Cloudy";
-  } else {
+  }
+  else if (weatherCode == 2) {
+    return "Mostly Sunny";
+  } 
+  else if (weatherCode == 3) {
+    return "Partly Cloudy";
+  } 
+  else if (weatherCode == 4) {
+    return "Mostly Cloudy";
+  } 
+  else if (weatherCode == 5) {
+    return "Overcast";
+  } 
+  else if (weatherCode == 6) {
+    return "Light Rain";
+  } 
+  else if (weatherCode == 7) {
+    return "Moderate Rain";
+  } 
+  else if (weatherCode == 8) {
+    return "Heavy Rain";
+  } 
+  else if (weatherCode == 9) {
+    return "Thunderstorms";
+  } 
+  else if (weatherCode == 10) {
+    return "Snowy";
+  } 
+  else {
     return "Rainy";
   }
 }
 
 function expandSearchBox() {
-      isExpanded.value = true;
-    }
-   function collapseSearchBox() {
-      setTimeout(() => {
-        isExpanded.value = false;
-      }, 200);  // Adjust delay as needed
-    }
+  isExpanded.value = true;
+}
+function collapseSearchBox() {
+  setTimeout(() => {
+    isExpanded.value = false;
+  }, 200);  // Adjust delay as needed
+}
 </script>
 <style scoped>
 .search-container {

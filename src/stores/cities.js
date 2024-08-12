@@ -7,7 +7,7 @@ export const useCityListStore = defineStore('cities', {
   state: () => ({
    
       cityList: cityData,
-      isMetric: true,
+      isMetric: false,
   
   }),
   getters: {

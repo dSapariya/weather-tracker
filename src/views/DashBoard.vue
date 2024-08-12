@@ -1,13 +1,17 @@
 <template>
     <div>
         <!-- <Setting></Setting> -->
-        <div v-if="cityList && cityList.length > 0">
-            <div v-for="(city, index) in cityList" class="p-4 bg-cover h-screen flex items-center justify-center"
-                :style="backgroundImageStyle">
-                <div class="p-4 w-full max-w-5xl border-none rounded-lg bg-black bg-opacity-30">
-                    <div class="grid grid-rows-3 grid-flow-col gap-4 w-full weather-card">
 
-                        <div class="w-1/2">
+        <div v-if="cityList && cityList.length > 0">
+            <div v-for="(city, index) in cityList"
+                class="p-4 bg-cover h-auto md:h-screen flex items-center justify-center"
+                :style="{ 'background-image': city.bg_image }">
+                <div class="p-4 w-full max-w-5xl border-none rounded-lg bg-black bg-opacity-30 mt-10">
+
+                    <div
+                        class="grid grid-rows-3 grid-flow-col gap-4 w-full sm:flex sm:flex-col sm:items-center sm:h-[100vh] sm:overflow-y-scroll sm:scroll-smooth md:flex-row md:h-auto md:overflow-auto">
+
+                        <div class="w-full sm:w-1/2">
                             <div class="row-span-3 w-full h-full flex flex-col items-start justify-start rounded bg-opacity-0"
                                 style="background-color: rgba(0, 0, 0, 0.1);">
                                 <div class="relative w-full">
@@ -123,7 +127,7 @@
                             </div>
                         </div>
 
-                        <div class="w-full">
+                        <div class="w-full sm:w-full">
                             <div class="col-span-2">
                                 <div class="flex flex-col h-42 rounded text-white items-start p-2"
                                     style="background-color: rgba(0, 0, 0, 0.6);">
@@ -140,16 +144,15 @@
                                     </div>
                                     <div class="flex flex-col w-full h-full">
                                         <div class="grid grid-rows-1 grid-cols-1 gap-4 w-full h-full">
-                                            <div class="row-span-3 w-full h-full flex flex-col items-start justify-start rounded bg-opacity-0"
-                                                style="background-color: rgba(0, 0, 0, 0.1);">
+                                            <div
+                                                class="row-span-3 w-full h-full flex flex-col items-start justify-start rounded bg-opacity-0">
                                                 <div class="grid grid-rows-1 grid-flow-col gap-4 w-full">
                                                     <div
-                                                        class="flex gap-5 overflow-x-auto scroll-smooth w-full card-scroll ">
+                                                        class="flex gap-5 overflow-x-auto scroll-smooth w-full card-scroll">
                                                         <div v-for="(hours, hoursIndex) in city.per_hour_data"
-                                                            class="hover:bg-gray-700 flex flex-col w-full justify-start items-center "
-                                                            style="background-color: rgba(0, 0, 0, 0.8);">
-                                                            <div
-                                                                class="hover:bg-gray-700 rounded-lg bg-black bg-opacity-50 mt-2 p-5 ">
+                                                            class="flex flex-col w-full justify-start items-center">
+                                                            <div class="hover:bg-gray-700 rounded-lg m-2 p-2"
+                                                                style="width: max-content;">
                                                                 <div class="flex justify-start items-center gap-2 ">
 
                                                                     <div>
@@ -160,7 +163,7 @@
                                                                 <span class="text-2xl">{{ hours.temperature_2m }}</span>
                                                                 <div>
 
-                                                                    <svg v-if="hours.weather_code == 'Rainy'"
+                                                                    <!-- <svg v-if="hours.weather_code == 'Rainy'"
                                                                         xmlns="http://www.w3.org/2000/svg" width="24"
                                                                         height="24" viewBox="0 0 24 24">
                                                                         <path fill="currentColor"
@@ -181,6 +184,169 @@
                                                                             <path fill="currentColor"
                                                                                 d="M11 6a6 6 0 0 1 5.703 4.132a5.502 5.502 0 0 1-.982 10.864L15.5 21h-9a4.5 4.5 0 0 1-1.495-8.746A6 6 0 0 1 11 6m5-3a6 6 0 0 1 5.09 9.18a6.52 6.52 0 0 0-3.63-2.88a7 7 0 0 0-5.949-4.282A6 6 0 0 1 16.002 3Z" />
                                                                         </g>
+                                                                    </svg> -->
+                                                                    <svg v-if="hours.weather_code == 'Sunny' || hours.weather_code == 'Mostly Sunny'"
+                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24">
+                                                                        <path fill="#f5cf0f"
+                                                                            d="M11 5V1h2v4zm6.65 2.75l-1.375-1.375l2.8-2.875l1.4 1.425zM19 13v-2h4v2zm-8 10v-4h2v4zM6.35 7.7L3.5 4.925l1.425-1.4L7.75 6.35zm12.7 12.8l-2.775-2.875l1.35-1.35l2.85 2.75zM1 13v-2h4v2zm3.925 7.5l-1.4-1.425l2.8-2.8l.725.675l.725.7zM12 18q-2.5 0-4.25-1.75T6 12t1.75-4.25T12 6t4.25 1.75T18 12t-1.75 4.25T12 18m0-2q1.65 0 2.825-1.175T16 12t-1.175-2.825T12 8T9.175 9.175T8 12t1.175 2.825T12 16m0-4" />
+                                                                    </svg>
+                                                                    <svg v-if="hours.weather_code == 'Partly Cloudy' || hours.weather_code == 'Cloudy' || hours.weather_code == 'Mostly Cloudy'"
+                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 512 512">
+                                                                        <defs>
+                                                                            <symbol id="meteoconsPartlyCloudyDayFill0"
+                                                                                viewBox="0 0 196 196">
+                                                                                <circle cx="98" cy="98" r="40"
+                                                                                    fill="url(#meteoconsPartlyCloudyDayFill4)"
+                                                                                    stroke="#f8af18"
+                                                                                    stroke-miterlimit="10"
+                                                                                    stroke-width="4" />
+                                                                                <path fill="none" stroke="#fbbf24"
+                                                                                    stroke-linecap="round"
+                                                                                    stroke-miterlimit="10"
+                                                                                    stroke-width="12"
+                                                                                    d="M98 31.4V6m0 184v-25.4M145.1 51l18-17.9M33 163l18-17.9M51 51L33 33m130.1 130.1l-18-18M6 98h25.4M190 98h-25.4">
+                                                                                    <animateTransform additive="sum"
+                                                                                        attributeName="transform"
+                                                                                        dur="6s"
+                                                                                        repeatCount="indefinite"
+                                                                                        type="rotate"
+                                                                                        values="0 98 98; 45 98 98" />
+                                                                                </path>
+                                                                            </symbol>
+                                                                            <symbol id="meteoconsPartlyCloudyDayFill1"
+                                                                                viewBox="0 0 350 222">
+                                                                                <path
+                                                                                    fill="url(#meteoconsPartlyCloudyDayFill3)"
+                                                                                    stroke="#e6effc"
+                                                                                    stroke-miterlimit="10"
+                                                                                    stroke-width="6"
+                                                                                    d="m291 107l-2.5.1A83.9 83.9 0 0 0 135.6 43A56 56 0 0 0 51 91a56.6 56.6 0 0 0 .8 9A60 60 0 0 0 63 219l4-.2v.2h224a56 56 0 0 0 0-112Z" />
+                                                                            </symbol>
+                                                                            <symbol id="meteoconsPartlyCloudyDayFill2"
+                                                                                viewBox="0 0 363 258">
+                                                                                <use width="196" height="196"
+                                                                                    href="#meteoconsPartlyCloudyDayFill0" />
+                                                                                <use width="350" height="222"
+                                                                                    href="#meteoconsPartlyCloudyDayFill1"
+                                                                                    transform="translate(13 36)" />
+                                                                            </symbol>
+                                                                            <linearGradient
+                                                                                id="meteoconsPartlyCloudyDayFill3"
+                                                                                x1="99.5" x2="232.6" y1="30.7"
+                                                                                y2="261.4"
+                                                                                gradientUnits="userSpaceOnUse">
+                                                                                <stop offset="0" stop-color="#f3f7fe" />
+                                                                                <stop offset=".5"
+                                                                                    stop-color="#f3f7fe" />
+                                                                                <stop offset="1" stop-color="#deeafb" />
+                                                                            </linearGradient>
+                                                                            <linearGradient
+                                                                                id="meteoconsPartlyCloudyDayFill4"
+                                                                                x1="78" x2="118" y1="63.4" y2="132.7"
+                                                                                gradientUnits="userSpaceOnUse">
+                                                                                <stop offset="0" stop-color="#fbbf24" />
+                                                                                <stop offset=".5"
+                                                                                    stop-color="#fbbf24" />
+                                                                                <stop offset="1" stop-color="#f59e0b" />
+                                                                            </linearGradient>
+                                                                        </defs>
+                                                                        <use width="363" height="258"
+                                                                            href="#meteoconsPartlyCloudyDayFill2"
+                                                                            transform="translate(68 109)" />
+                                                                    </svg>
+                                                                    <svg v-if="hours.weather_code == 'Light Rain'"
+                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24">
+                                                                        <g fill="none">
+                                                                            <path fill="#fafafa"
+                                                                                d="M12 12.5H6v1h6zm6 0h-6v1h6zm2.5-2.5a2.5 2.5 0 0 1-2.5 2.5v1a3.5 3.5 0 0 0 3.5-3.5zM18 7.5a2.5 2.5 0 0 1 2.5 2.5h1A3.5 3.5 0 0 0 18 6.5zm-.98-1.75A5.5 5.5 0 0 0 12 2.5v1a4.5 4.5 0 0 1 4.108 2.66zM12 2.5a5.5 5.5 0 0 0-5.02 3.25l.912.41A4.5 4.5 0 0 1 12 3.5zm-6 4A3.5 3.5 0 0 0 2.5 10h1A2.5 2.5 0 0 1 6 7.5zM2.5 10A3.5 3.5 0 0 0 6 13.5v-1A2.5 2.5 0 0 1 3.5 10zm4.48-4.25c-.209.464-.595.75-.98.75v1c.895 0 1.577-.637 1.892-1.34zM18 6.5c-.385 0-.771-.286-.98-.75l-.912.41c.316.703.997 1.34 1.892 1.34z" />
+                                                                            <path stroke="#fafafa"
+                                                                                stroke-linecap="round"
+                                                                                d="M12 19v-2m5 3v-3M7 21v-4" />
+                                                                        </g>
+                                                                    </svg>
+
+                                                                    <svg v-if="hours.weather_code == 'Heavy Rain'"
+                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24">
+                                                                        <g fill="none">
+                                                                            <path
+                                                                                d="M24 0v24H0V0zM12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z" />
+                                                                            <path fill="#fafafa"
+                                                                                d="M9.889 19.656a1 1 0 0 1 1.932.518l-.259.966a1 1 0 0 1-1.932-.518zm-2.195-1.862a1 1 0 0 1 .707 1.224l-.259.966a1 1 0 1 1-1.932-.517l.259-.966a1 1 0 0 1 1.225-.707m7.333 0a1 1 0 0 1 .707 1.224l-.258.966a1 1 0 1 1-1.932-.517l.258-.966a1 1 0 0 1 1.225-.707m-2.878-2.709a1 1 0 0 1 .707 1.225l-.259.966a1 1 0 1 1-1.932-.518l.26-.966a1 1 0 0 1 1.224-.707M11.5 2a6.5 6.5 0 0 1 6.086 4.212a6.002 6.002 0 0 1 .344 11.471a3 3 0 0 0 .512-1.045l.26-.966a3 3 0 0 0-5.478-2.309a3 3 0 0 0-2.277-.16a3 3 0 0 0-5.375.917l-.259.965a3 3 0 0 0 0 1.553a3 3 0 0 0-.581.819A5 5 0 0 1 5 8.417A6.5 6.5 0 0 1 11.5 2M8.729 13.93a1 1 0 0 1 .707 1.225l-.259.966a1 1 0 1 1-1.932-.518l.26-.966a1 1 0 0 1 1.224-.707m7.334 0a1 1 0 0 1 .707 1.225l-.26.966a1 1 0 1 1-1.931-.518l.259-.966a1 1 0 0 1 1.225-.707" />
+                                                                        </g>
+                                                                    </svg>
+                                                                    <svg v-if="hours.weather_code == 'Thunderstorms'"
+                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 512 512">
+                                                                        <defs>
+                                                                            <linearGradient
+                                                                                id="meteoconsThunderstormsFill0"
+                                                                                x1="99.5" x2="232.6" y1="30.7"
+                                                                                y2="261.4"
+                                                                                gradientUnits="userSpaceOnUse">
+                                                                                <stop offset="0" stop-color="#f3f7fe" />
+                                                                                <stop offset=".5"
+                                                                                    stop-color="#f3f7fe" />
+                                                                                <stop offset="1" stop-color="#deeafb" />
+                                                                            </linearGradient>
+                                                                            <linearGradient
+                                                                                id="meteoconsThunderstormsFill1"
+                                                                                x1="8.7" x2="80.9" y1="17.1" y2="142.1"
+                                                                                gradientUnits="userSpaceOnUse">
+                                                                                <stop offset="0" stop-color="#f7b23b" />
+                                                                                <stop offset=".5"
+                                                                                    stop-color="#f7b23b" />
+                                                                                <stop offset="1" stop-color="#f59e0b" />
+                                                                            </linearGradient>
+                                                                            <symbol id="meteoconsThunderstormsFill2"
+                                                                                viewBox="0 0 350 222">
+                                                                                <path
+                                                                                    fill="url(#meteoconsThunderstormsFill0)"
+                                                                                    stroke="#e6effc"
+                                                                                    stroke-miterlimit="10"
+                                                                                    stroke-width="6"
+                                                                                    d="m291 107l-2.5.1A83.9 83.9 0 0 0 135.6 43A56 56 0 0 0 51 91a56.6 56.6 0 0 0 .8 9A60 60 0 0 0 63 219l4-.2v.2h224a56 56 0 0 0 0-112Z" />
+                                                                            </symbol>
+                                                                            <symbol id="meteoconsThunderstormsFill3"
+                                                                                viewBox="0 0 102.7 186.8">
+                                                                                <path
+                                                                                    fill="url(#meteoconsThunderstormsFill1)"
+                                                                                    stroke="#f6a823"
+                                                                                    stroke-miterlimit="10"
+                                                                                    stroke-width="4"
+                                                                                    d="m34.8 2l-32 96h32l-16 80l80-112h-48l32-64h-48z">
+                                                                                    <animate
+                                                                                        id="meteoconsThunderstormsFill4"
+                                                                                        attributeName="opacity"
+                                                                                        begin="0s; x1.end+.67s"
+                                                                                        dur="1.33s"
+                                                                                        keyTimes="0; .38; .5; .63; .75; .86; .94; 1"
+                                                                                        values="1; 1; 0; 1; 0; 1; 0; 1" />
+                                                                                </path>
+                                                                            </symbol>
+                                                                        </defs>
+                                                                        <use width="350" height="222"
+                                                                            href="#meteoconsThunderstormsFill2"
+                                                                            transform="translate(81 145)" />
+                                                                        <use width="102.7" height="186.7"
+                                                                            href="#meteoconsThunderstormsFill3"
+                                                                            transform="translate(205.23 291)" />
+                                                                    </svg>
+                                                                    <svg v-if="hours.weather_code == 'Snowy'"
+                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24">
+                                                                        <path fill="currentColor"
+                                                                            d="M6 14a1 1 0 0 1 1 1a1 1 0 0 1-1 1a5 5 0 0 1-5-5a5 5 0 0 1 5-5c1-2.35 3.3-4 6-4c3.43 0 6.24 2.66 6.5 6.03L19 8a4 4 0 0 1 4 4a4 4 0 0 1-4 4h-1a1 1 0 0 1-1-1a1 1 0 0 1 1-1h1a2 2 0 0 0 2-2a2 2 0 0 0-2-2h-2V9a5 5 0 0 0-5-5C9.5 4 7.45 5.82 7.06 8.19C6.73 8.07 6.37 8 6 8a3 3 0 0 0-3 3a3 3 0 0 0 3 3m1.88 4.07l2.19-.57l-1.61-1.62c-.39-.38-.39-1.02 0-1.42c.39-.39 1.04-.39 1.42 0l1.62 1.61l.57-2.19a1 1 0 1 1 1.93.52l-.59 2.19L15.6 16a1 1 0 1 1 .52 1.93l-2.19.57l1.61 1.62c.39.38.39 1.03 0 1.42s-1.04.39-1.42 0l-1.62-1.61l-.57 2.19A1 1 0 1 1 10 21.6l.59-2.19L8.4 20a1 1 0 1 1-.52-1.93" />
+                                                                    </svg>
+
+                                                                    <svg v-if="hours.weather_code == 'Rainy' || hours.weather_code == 'Moderate Rain'"
+                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 512 512">
+                                                                        <path fill="currentColor"
+                                                                            d="M456.26 139.37c-16.77-16.73-39.17-28.41-65.17-34a16 16 0 0 1-11.19-9a142.24 142.24 0 0 0-42.19-53.21C314.48 25.39 286.23 16 256 16a140.24 140.24 0 0 0-93.5 35.32c-24.2 21.56-40.91 51.34-48.43 85.83a16.05 16.05 0 0 1-11.72 12.18c-25 6.3-35.71 12.54-49.21 24.56C34 190.93 24 214.14 24 240.8c0 30.55 11.23 55.64 32.47 72.56C75.08 328.17 100.5 336 130 336h234c33.2 0 64.11-11.46 87-32.28c23.84-21.65 37-51.67 37-84.52c0-31.49-11-59.09-31.74-79.83M112 448a16 16 0 0 1-13.3-24.88l32-48a16 16 0 0 1 26.62 17.76l-32 48A16 16 0 0 1 112 448m48 48a16 16 0 0 1-13.29-24.88l64-96a16 16 0 0 1 26.62 17.76l-64 96A16 16 0 0 1 160 496m112-48a16 16 0 0 1-13.3-24.88l32-48a16 16 0 0 1 26.62 17.76l-32 48A16 16 0 0 1 272 448m48 48a16 16 0 0 1-13.3-24.88l64-96a16 16 0 0 1 26.62 17.76l-64 96A16 16 0 0 1 320 496" />
                                                                     </svg>
 
 
@@ -209,25 +375,25 @@
                                         </svg>
                                         <h1 class="text-1xl uppercase">Weekly forecast</h1>
                                     </div>
+
                                     <div class="flex flex-col w-full h-full">
                                         <div class="grid grid-rows-1 grid-cols-1 gap-4 w-full h-full">
-                                            <div class="row-span-3 w-full h-full flex flex-col items-start justify-start rounded bg-opacity-0"
-                                                style="background-color: rgba(0, 0, 0, 0.1);">
+                                            <div
+                                                class="row-span-3 w-full h-full flex flex-col items-start justify-start rounded bg-opacity-0">
                                                 <div class="grid grid-rows-1 grid-flow-col gap-4 w-full">
 
                                                     <div
                                                         class="flex gap-5 overflow-x-auto scroll-smooth w-full card-scroll">
                                                         <div v-for="(week, weekIndex) in city.daily_data"
                                                             :key="weekIndex"
-                                                            class="hover:bg-gray-700 flex flex-col w-full justify-start items-center"
-                                                            style="background-color: rgba(0, 0, 0, 0.8);">
+                                                            class="flex flex-col w-full justify-start items-center">
 
-                                                            <div
-                                                                class="hover:bg-gray-700 rounded-lg bg-black bg-opacity-50 mt-2 p-2">
+                                                            <div class="hover:bg-gray-700 rounded-lg px-4 py-1 mt-2"
+                                                                style="width: max-content;">
                                                                 <div class="flex justify-start items-center gap-2">
 
                                                                     <div>
-                                                                        <h1 class="text-xs">{{
+                                                                        <h1 class="text-xs uppercase">{{
                                                                             moment(week.time).format("ddd") }}</h1>
                                                                         <span class="text-xs">{{
                                                                             moment(week.time).format("DD") }}/{{
@@ -244,34 +410,171 @@
                                                                     <span class="text-xs">{{ week.rain_sum }} {{
                                                                         city.daily_units.rain_sum }}</span>
                                                                 </div>
-
                                                                 <div class="mt-2">
 
-
-
-                                                                    <svg v-if="week.weather_code == 'Rainy'"
+                                                                    <svg v-if="week.weather_code == 'Sunny' || week.weather_code == 'Mostly Sunny'"
                                                                         xmlns="http://www.w3.org/2000/svg" width="24"
                                                                         height="24" viewBox="0 0 24 24">
-                                                                        <path fill="currentColor"
-                                                                            d="M13.95 21.9q-.375.2-.762.063t-.588-.513l-1.5-3q-.2-.375-.062-.762t.512-.588t.763-.062t.587.512l1.5 3q.2.375.063.763t-.513.587m6 0q-.375.2-.762.063t-.588-.513l-1.5-3q-.2-.375-.062-.762t.512-.588t.763-.062t.587.512l1.5 3q.2.375.063.763t-.513.587m-12 0q-.375.2-.762.063T6.6 21.45l-1.5-3q-.2-.375-.062-.762t.512-.588t.763-.062t.587.512l1.5 3q.2.375.063.763t-.513.587M7.5 16q-2.275 0-3.887-1.612T2 10.5q0-2.075 1.375-3.625t3.4-1.825q.8-1.425 2.188-2.238T12 2q2.25 0 3.913 1.438t2.012 3.587q1.725.15 2.9 1.425T22 11.5q0 1.875-1.312 3.188T17.5 16z" />
+                                                                        <path fill="#f5cf0f"
+                                                                            d="M11 5V1h2v4zm6.65 2.75l-1.375-1.375l2.8-2.875l1.4 1.425zM19 13v-2h4v2zm-8 10v-4h2v4zM6.35 7.7L3.5 4.925l1.425-1.4L7.75 6.35zm12.7 12.8l-2.775-2.875l1.35-1.35l2.85 2.75zM1 13v-2h4v2zm3.925 7.5l-1.4-1.425l2.8-2.8l.725.675l.725.7zM12 18q-2.5 0-4.25-1.75T6 12t1.75-4.25T12 6t4.25 1.75T18 12t-1.75 4.25T12 18m0-2q1.65 0 2.825-1.175T16 12t-1.175-2.825T12 8T9.175 9.175T8 12t1.175 2.825T12 16m0-4" />
                                                                     </svg>
-                                                                    <svg v-if="week.weather_code == 'Sunny'"
+                                                                    <svg v-if="week.weather_code == 'Partly Cloudy' || week.weather_code == 'Cloudy' || week.weather_code == 'Mostly Cloudy'"
                                                                         xmlns="http://www.w3.org/2000/svg" width="24"
                                                                         height="24" viewBox="0 0 512 512">
-                                                                        <path fill="currentColor"
-                                                                            d="M340 480H106c-29.5 0-54.92-7.83-73.53-22.64C11.23 440.44 0 415.35 0 384.8c0-26.66 10.08-49.8 29.14-66.91c15.24-13.68 36.17-23.21 59-26.84c.06 0 .08 0 .09-.05c6.44-39 23.83-72.09 50.31-95.68A140.24 140.24 0 0 1 232 160c30.23 0 58.48 9.39 81.71 27.17a142.7 142.7 0 0 1 45.36 60.66c29.41 4.82 54.72 17.11 73.19 35.54C453 304.11 464 331.71 464 363.2c0 32.85-13.13 62.87-37 84.52c-22.89 20.82-53.8 32.28-87 32.28m41.5-260.11a169.2 169.2 0 0 1 45.44 19A96 96 0 0 0 281 129.33q-2.85 2-5.54 4.2a162.5 162.5 0 0 1 57.73 28.23a174.5 174.5 0 0 1 48.31 58.13M448 192h64v32h-64zM320 32h32v64h-32zm-64.65 97.63l12.45-12.45l-44.62-44.63l-22.63 22.63l33.17 33.17h.6a172 172 0 0 1 21.03 1.28m148.853-12.46l44.626-44.625l22.627 22.627l-44.625 44.626z" />
+                                                                        <defs>
+                                                                            <symbol id="meteoconsPartlyCloudyDayFill0"
+                                                                                viewBox="0 0 196 196">
+                                                                                <circle cx="98" cy="98" r="40"
+                                                                                    fill="url(#meteoconsPartlyCloudyDayFill4)"
+                                                                                    stroke="#f8af18"
+                                                                                    stroke-miterlimit="10"
+                                                                                    stroke-width="4" />
+                                                                                <path fill="none" stroke="#fbbf24"
+                                                                                    stroke-linecap="round"
+                                                                                    stroke-miterlimit="10"
+                                                                                    stroke-width="12"
+                                                                                    d="M98 31.4V6m0 184v-25.4M145.1 51l18-17.9M33 163l18-17.9M51 51L33 33m130.1 130.1l-18-18M6 98h25.4M190 98h-25.4">
+                                                                                    <animateTransform additive="sum"
+                                                                                        attributeName="transform"
+                                                                                        dur="6s"
+                                                                                        repeatCount="indefinite"
+                                                                                        type="rotate"
+                                                                                        values="0 98 98; 45 98 98" />
+                                                                                </path>
+                                                                            </symbol>
+                                                                            <symbol id="meteoconsPartlyCloudyDayFill1"
+                                                                                viewBox="0 0 350 222">
+                                                                                <path
+                                                                                    fill="url(#meteoconsPartlyCloudyDayFill3)"
+                                                                                    stroke="#e6effc"
+                                                                                    stroke-miterlimit="10"
+                                                                                    stroke-width="6"
+                                                                                    d="m291 107l-2.5.1A83.9 83.9 0 0 0 135.6 43A56 56 0 0 0 51 91a56.6 56.6 0 0 0 .8 9A60 60 0 0 0 63 219l4-.2v.2h224a56 56 0 0 0 0-112Z" />
+                                                                            </symbol>
+                                                                            <symbol id="meteoconsPartlyCloudyDayFill2"
+                                                                                viewBox="0 0 363 258">
+                                                                                <use width="196" height="196"
+                                                                                    href="#meteoconsPartlyCloudyDayFill0" />
+                                                                                <use width="350" height="222"
+                                                                                    href="#meteoconsPartlyCloudyDayFill1"
+                                                                                    transform="translate(13 36)" />
+                                                                            </symbol>
+                                                                            <linearGradient
+                                                                                id="meteoconsPartlyCloudyDayFill3"
+                                                                                x1="99.5" x2="232.6" y1="30.7"
+                                                                                y2="261.4"
+                                                                                gradientUnits="userSpaceOnUse">
+                                                                                <stop offset="0" stop-color="#f3f7fe" />
+                                                                                <stop offset=".5"
+                                                                                    stop-color="#f3f7fe" />
+                                                                                <stop offset="1" stop-color="#deeafb" />
+                                                                            </linearGradient>
+                                                                            <linearGradient
+                                                                                id="meteoconsPartlyCloudyDayFill4"
+                                                                                x1="78" x2="118" y1="63.4" y2="132.7"
+                                                                                gradientUnits="userSpaceOnUse">
+                                                                                <stop offset="0" stop-color="#fbbf24" />
+                                                                                <stop offset=".5"
+                                                                                    stop-color="#fbbf24" />
+                                                                                <stop offset="1" stop-color="#f59e0b" />
+                                                                            </linearGradient>
+                                                                        </defs>
+                                                                        <use width="363" height="258"
+                                                                            href="#meteoconsPartlyCloudyDayFill2"
+                                                                            transform="translate(68 109)" />
                                                                     </svg>
-                                                                    <svg v-if="week.weather_code == 'Cloudy'"
+                                                                    <svg v-if="week.weather_code == 'Light Rain'"
+                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24">
+                                                                        <g fill="none">
+                                                                            <path fill="#fafafa"
+                                                                                d="M12 12.5H6v1h6zm6 0h-6v1h6zm2.5-2.5a2.5 2.5 0 0 1-2.5 2.5v1a3.5 3.5 0 0 0 3.5-3.5zM18 7.5a2.5 2.5 0 0 1 2.5 2.5h1A3.5 3.5 0 0 0 18 6.5zm-.98-1.75A5.5 5.5 0 0 0 12 2.5v1a4.5 4.5 0 0 1 4.108 2.66zM12 2.5a5.5 5.5 0 0 0-5.02 3.25l.912.41A4.5 4.5 0 0 1 12 3.5zm-6 4A3.5 3.5 0 0 0 2.5 10h1A2.5 2.5 0 0 1 6 7.5zM2.5 10A3.5 3.5 0 0 0 6 13.5v-1A2.5 2.5 0 0 1 3.5 10zm4.48-4.25c-.209.464-.595.75-.98.75v1c.895 0 1.577-.637 1.892-1.34zM18 6.5c-.385 0-.771-.286-.98-.75l-.912.41c.316.703.997 1.34 1.892 1.34z" />
+                                                                            <path stroke="#fafafa"
+                                                                                stroke-linecap="round"
+                                                                                d="M12 19v-2m5 3v-3M7 21v-4" />
+                                                                        </g>
+                                                                    </svg>
+
+                                                                    <svg v-if="week.weather_code == 'Heavy Rain'"
                                                                         xmlns="http://www.w3.org/2000/svg" width="24"
                                                                         height="24" viewBox="0 0 24 24">
                                                                         <g fill="none">
                                                                             <path
-                                                                                d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
-                                                                            <path fill="currentColor"
-                                                                                d="M11 6a6 6 0 0 1 5.703 4.132a5.502 5.502 0 0 1-.982 10.864L15.5 21h-9a4.5 4.5 0 0 1-1.495-8.746A6 6 0 0 1 11 6m5-3a6 6 0 0 1 5.09 9.18a6.52 6.52 0 0 0-3.63-2.88a7 7 0 0 0-5.949-4.282A6 6 0 0 1 16.002 3Z" />
+                                                                                d="M24 0v24H0V0zM12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z" />
+                                                                            <path fill="#fafafa"
+                                                                                d="M9.889 19.656a1 1 0 0 1 1.932.518l-.259.966a1 1 0 0 1-1.932-.518zm-2.195-1.862a1 1 0 0 1 .707 1.224l-.259.966a1 1 0 1 1-1.932-.517l.259-.966a1 1 0 0 1 1.225-.707m7.333 0a1 1 0 0 1 .707 1.224l-.258.966a1 1 0 1 1-1.932-.517l.258-.966a1 1 0 0 1 1.225-.707m-2.878-2.709a1 1 0 0 1 .707 1.225l-.259.966a1 1 0 1 1-1.932-.518l.26-.966a1 1 0 0 1 1.224-.707M11.5 2a6.5 6.5 0 0 1 6.086 4.212a6.002 6.002 0 0 1 .344 11.471a3 3 0 0 0 .512-1.045l.26-.966a3 3 0 0 0-5.478-2.309a3 3 0 0 0-2.277-.16a3 3 0 0 0-5.375.917l-.259.965a3 3 0 0 0 0 1.553a3 3 0 0 0-.581.819A5 5 0 0 1 5 8.417A6.5 6.5 0 0 1 11.5 2M8.729 13.93a1 1 0 0 1 .707 1.225l-.259.966a1 1 0 1 1-1.932-.518l.26-.966a1 1 0 0 1 1.224-.707m7.334 0a1 1 0 0 1 .707 1.225l-.26.966a1 1 0 1 1-1.931-.518l.259-.966a1 1 0 0 1 1.225-.707" />
                                                                         </g>
                                                                     </svg>
+                                                                    <svg v-if="week.weather_code == 'Thunderstorms'"
+                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 512 512">
+                                                                        <defs>
+                                                                            <linearGradient
+                                                                                id="meteoconsThunderstormsFill0"
+                                                                                x1="99.5" x2="232.6" y1="30.7"
+                                                                                y2="261.4"
+                                                                                gradientUnits="userSpaceOnUse">
+                                                                                <stop offset="0" stop-color="#f3f7fe" />
+                                                                                <stop offset=".5"
+                                                                                    stop-color="#f3f7fe" />
+                                                                                <stop offset="1" stop-color="#deeafb" />
+                                                                            </linearGradient>
+                                                                            <linearGradient
+                                                                                id="meteoconsThunderstormsFill1"
+                                                                                x1="8.7" x2="80.9" y1="17.1" y2="142.1"
+                                                                                gradientUnits="userSpaceOnUse">
+                                                                                <stop offset="0" stop-color="#f7b23b" />
+                                                                                <stop offset=".5"
+                                                                                    stop-color="#f7b23b" />
+                                                                                <stop offset="1" stop-color="#f59e0b" />
+                                                                            </linearGradient>
+                                                                            <symbol id="meteoconsThunderstormsFill2"
+                                                                                viewBox="0 0 350 222">
+                                                                                <path
+                                                                                    fill="url(#meteoconsThunderstormsFill0)"
+                                                                                    stroke="#e6effc"
+                                                                                    stroke-miterlimit="10"
+                                                                                    stroke-width="6"
+                                                                                    d="m291 107l-2.5.1A83.9 83.9 0 0 0 135.6 43A56 56 0 0 0 51 91a56.6 56.6 0 0 0 .8 9A60 60 0 0 0 63 219l4-.2v.2h224a56 56 0 0 0 0-112Z" />
+                                                                            </symbol>
+                                                                            <symbol id="meteoconsThunderstormsFill3"
+                                                                                viewBox="0 0 102.7 186.8">
+                                                                                <path
+                                                                                    fill="url(#meteoconsThunderstormsFill1)"
+                                                                                    stroke="#f6a823"
+                                                                                    stroke-miterlimit="10"
+                                                                                    stroke-width="4"
+                                                                                    d="m34.8 2l-32 96h32l-16 80l80-112h-48l32-64h-48z">
+                                                                                    <animate
+                                                                                        id="meteoconsThunderstormsFill4"
+                                                                                        attributeName="opacity"
+                                                                                        begin="0s; x1.end+.67s"
+                                                                                        dur="1.33s"
+                                                                                        keyTimes="0; .38; .5; .63; .75; .86; .94; 1"
+                                                                                        values="1; 1; 0; 1; 0; 1; 0; 1" />
+                                                                                </path>
+                                                                            </symbol>
+                                                                        </defs>
+                                                                        <use width="350" height="222"
+                                                                            href="#meteoconsThunderstormsFill2"
+                                                                            transform="translate(81 145)" />
+                                                                        <use width="102.7" height="186.7"
+                                                                            href="#meteoconsThunderstormsFill3"
+                                                                            transform="translate(205.23 291)" />
+                                                                    </svg>
+                                                                    <svg v-if="week.weather_code == 'Snowy'"
+                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24">
+                                                                        <path fill="currentColor"
+                                                                            d="M6 14a1 1 0 0 1 1 1a1 1 0 0 1-1 1a5 5 0 0 1-5-5a5 5 0 0 1 5-5c1-2.35 3.3-4 6-4c3.43 0 6.24 2.66 6.5 6.03L19 8a4 4 0 0 1 4 4a4 4 0 0 1-4 4h-1a1 1 0 0 1-1-1a1 1 0 0 1 1-1h1a2 2 0 0 0 2-2a2 2 0 0 0-2-2h-2V9a5 5 0 0 0-5-5C9.5 4 7.45 5.82 7.06 8.19C6.73 8.07 6.37 8 6 8a3 3 0 0 0-3 3a3 3 0 0 0 3 3m1.88 4.07l2.19-.57l-1.61-1.62c-.39-.38-.39-1.02 0-1.42c.39-.39 1.04-.39 1.42 0l1.62 1.61l.57-2.19a1 1 0 1 1 1.93.52l-.59 2.19L15.6 16a1 1 0 1 1 .52 1.93l-2.19.57l1.61 1.62c.39.38.39 1.03 0 1.42s-1.04.39-1.42 0l-1.62-1.61l-.57 2.19A1 1 0 1 1 10 21.6l.59-2.19L8.4 20a1 1 0 1 1-.52-1.93" />
+                                                                    </svg>
 
+                                                                    <svg v-if="week.weather_code == 'Rainy' || week.weather_code == 'Moderate Rain'"
+                                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 512 512">
+                                                                        <path fill="currentColor"
+                                                                            d="M456.26 139.37c-16.77-16.73-39.17-28.41-65.17-34a16 16 0 0 1-11.19-9a142.24 142.24 0 0 0-42.19-53.21C314.48 25.39 286.23 16 256 16a140.24 140.24 0 0 0-93.5 35.32c-24.2 21.56-40.91 51.34-48.43 85.83a16.05 16.05 0 0 1-11.72 12.18c-25 6.3-35.71 12.54-49.21 24.56C34 190.93 24 214.14 24 240.8c0 30.55 11.23 55.64 32.47 72.56C75.08 328.17 100.5 336 130 336h234c33.2 0 64.11-11.46 87-32.28c23.84-21.65 37-51.67 37-84.52c0-31.49-11-59.09-31.74-79.83M112 448a16 16 0 0 1-13.3-24.88l32-48a16 16 0 0 1 26.62 17.76l-32 48A16 16 0 0 1 112 448m48 48a16 16 0 0 1-13.29-24.88l64-96a16 16 0 0 1 26.62 17.76l-64 96A16 16 0 0 1 160 496m112-48a16 16 0 0 1-13.3-24.88l32-48a16 16 0 0 1 26.62 17.76l-32 48A16 16 0 0 1 272 448m48 48a16 16 0 0 1-13.3-24.88l64-96a16 16 0 0 1 26.62 17.76l-64 96A16 16 0 0 1 320 496" />
+                                                                    </svg>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -311,7 +614,9 @@
                                                     <div class="flex-col">
                                                         <span class="text-3xl">{{ city.uv_index_max }}</span>
                                                     </div>
-                                                    <span>Moderate</span>
+                                                    <span v-if=" city.uv_index_max > 0 &&  city.uv_index_max <=4 ">Moderate</span>
+                                                    <span v-if=" city.uv_index_max > 4 &&  city.uv_index_max <=7 ">High</span>
+                                                    <span v-if=" city.uv_index_max > 7">Extreme Risk</span>
                                                 </div>
                                                 <div>
                                                     <!-- <svg xmlns="http://www.w3.org/2000/svg" width="84" height="24"
@@ -395,6 +700,10 @@
 <script setup>
 import { ref, computed, onMounted, getCurrentInstance } from 'vue';
 import imagePath from '@/assets/images/rainy.jpg';
+import imageSunnyPath from '@/assets/images/Sunny.jpg';
+import imageCloudyPath from '@/assets/images/Cloudy.jpg';
+import imageThunderstormsPath from '@/assets/images/Thunderstorms.jpg';
+import imageSnowyPath from "@/assets/images/Snowy.avif";
 import { useCityListStore } from "@/stores/cities";
 import SearchList from "../components/SearchList.vue";
 import Setting from "../components/UnitSetting.vue";
@@ -404,10 +713,10 @@ import slider from "vue3-slider"
 const store = useCityListStore();
 const { cityList, isMetric } = storeToRefs(store);
 const isLoading = ref(true);
-const backgroundImageStyle = computed(() => ({
-    backgroundImage: `url(${imagePath})`,
-}));
-
+// const backgroundImageStyle = computed(() => ({
+//     backgroundImage: `url(${imagePath})`,
+// }));
+const backgroundImageStyle = ref();
 onMounted(async () => {
     await getDefaultData();
 });
@@ -416,6 +725,8 @@ async function getDefaultData() {
     const requests = cityList.value.map((city) => {
         const { $axios } = getCurrentInstance().appContext.config.globalProperties;
         var url = "";
+        console.log('isMetric', isMetric.value)
+        isMetric.value = false
         if (!isMetric.value) {
             url = `?latitude=${city.latitude}&longitude=${city.longitude}&timezone=GMT&current_weather=true&hourly=temperature_2m,relative_humidity_2m,dew_point_2m,visibility,precipitation_probability,weather_code&forecast_hours=24&forecast_minutely_15=4&daily=temperature_2m_min,uv_index_max,uv_index_clear_sky_max,temperature_2m_max,sunrise,sunset,rain_sum,precipitation_sum,precipitation_probability_max,weather_code`;
         } else {
@@ -466,15 +777,64 @@ async function getDefaultData() {
         cityList.value[index].daily_data = rearrangedData;
         cityList.value[index].per_hour_data = rearrangedDataHours;
         cityList.value[index].weather_code = rearrangedData[moment().format("YYYY-MM-DD")].weather_code;
+        console.log('weather_code', rearrangedData[moment().format("YYYY-MM-DD")].weather_code)
+        if (rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Rainy' || rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Light Rainy' || rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Moderate Rainy' || rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Heavy Rainy') {
+            cityList.value[index].bg_image = `url(${imagePath})`
+        }
+        else if (rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Sunny' || rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Mostly Sunny') {
+            cityList.value[index].bg_image = `url(${imageSunnyPath})`
+
+        }
+        else if (rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Partly Cloudy' || rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Mostly Cloudy' || rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Cloudy') {
+            cityList.value[index].bg_image = `url(${imageCloudyPath})`
+
+        }
+        else if (rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Thunderstorms') {
+            cityList.value[index].bg_image = `url(${imageThunderstormsPath})`
+
+        }
+        else if (rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Snowy') {
+            cityList.value[index].bg_image = `url(${imageSnowyPath})`
+
+        }
+        else {
+            cityList.value[index].bg_image = `url(${imagePath})`
+        }
     });
     isLoading.value = false;
 }
 function classifyWeather(weatherCode) {
-    if (weatherCode >= 0 && weatherCode <= 3) {
+    if (weatherCode >= 0 && weatherCode <= 1) {
         return "Sunny";
-    } else if (weatherCode >= 4 && weatherCode <= 7) {
+    }
+    else if (weatherCode == 2) {
+        return "Mostly Sunny";
+    }
+    else if (weatherCode == 3) {
+        return "Partly Cloudy";
+    }
+    else if (weatherCode == 4) {
+        return "Mostly Cloudy";
+    }
+    else if (weatherCode == 5) {
         return "Cloudy";
-    } else {
+    }
+    else if (weatherCode == 6) {
+        return "Light Rain";
+    }
+    else if (weatherCode == 7) {
+        return "Moderate Rain";
+    }
+    else if (weatherCode == 8) {
+        return "Heavy Rain";
+    }
+    else if (weatherCode == 9) {
+        return "Thunderstorms";
+    }
+    else if (weatherCode == 10) {
+        return "Snowy";
+    }
+    else {
         return "Rainy";
     }
 }
@@ -483,19 +843,36 @@ function classifyWeather(weatherCode) {
 <style scoped>
 .weather-card {
     display: flex !important;
+    flex-direction: row;
+    /* Default for larger screens */
+}
+
+.weather-card-mobile {
+    display: flex !important;
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: scroll;
+    margin-top: 10%;
 }
 
 .card-scroll {
     scrollbar-width: none;
     scrollbar-color: #888 #f1f1f1;
-    
+
 }
 
 .hover-card {
     transition: background-color 0.3s;
 }
+
 .hover-card:hover {
     background-color: rgba(255, 255, 255, 0.2);
     /* Change this to your desired color */
+}
+
+@media (min-width: 768px) {
+    .weather-card {
+        flex-direction: row;
+    }
 }
 </style>
