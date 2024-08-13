@@ -27,17 +27,35 @@ npm run dev
 ```sh
 npm run build
 ```
-### Used Packages
 
-```sh
-axios - Handle HTTP requests
-vue-router - for routing
-flowbite -  for UI components
-moment - for date and time manipulation
-Pinia - for state management
-vue draggable - drag-and-drop functionality
-tailwind - for css design  
-```
+## 🚀 **Used Packages**
+
+- **Axios**: Handle HTTP requests  
+- **Vue Router**: For routing  
+- **Flowbite**: For UI components  
+- **Moment.js**: For date and time manipulation  
+- **Pinia**: For state management  
+- **Tailwind CSS**: For CSS design  
+
+## 📸 **Screenshots**
+
+Here are some screenshots of the project:
+
+### Rainy Day
+![alt text](image.png)
+
+### Sunny Day
+![alt text](image-1.png)
+
+### Cloudy Day
+![alt text](image-2.png)
+
+### Mobile View
+<div style="display: flex; gap: 10px;">
+    <img src="./src/assets/images/ss1.png" alt="alt text" style="width: 45%;"/>
+    <img src="./src/assets/images/ss2.png" alt="alt text" style="width: 45%;"/>
+</div>
 
 ### Demo
+
 <a href="https://dsapariya.github.io/weather-tracker/" target="_blank">Demo</a>
