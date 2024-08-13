@@ -268,7 +268,6 @@ async function getTempDetails() {
       };
     });
     cityList.value[index].daily_data = rearrangedData;
-    console.log('weew', rearrangedData[moment().format("YYYY-MM-DD")].weather_code)
     cityList.value[index].weather_code = rearrangedData[moment().format("YYYY-MM-DD")].weather_code;
   });
 

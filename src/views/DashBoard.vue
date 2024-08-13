@@ -147,7 +147,7 @@
 
                                         <h1 class="text-1xl uppercase">hourly forcast</h1>
                                     </div>
-                                    
+
                                     <div class="flex flex-col w-full h-full">
                                         <div class="grid grid-rows-1 grid-cols-1 gap-4 w-full h-full">
                                             <div
@@ -636,7 +636,7 @@
                                             </div>
                                             <p class="text-xs mt-5"></p>
                                             <slider v-model="city.uv_index_max" color="#FB278D" track-color="#FEFEFE"
-                                                max="10" min="0" />
+                                                :max="10" :min="0" />
 
                                         </div>
                                         <div class="flex flex-col w-full  rounded-xl bg-black bg-opacity-50 p-2"
@@ -733,7 +733,6 @@ async function getDefaultData() {
     const requests = cityList.value.map((city) => {
         const { $axios } = getCurrentInstance().appContext.config.globalProperties;
         var url = "";
-        console.log('isMetric', isMetric.value)
         isMetric.value = false
         if (!isMetric.value) {
             url = `?latitude=${city.latitude}&longitude=${city.longitude}&timezone=GMT&current_weather=true&hourly=temperature_2m,relative_humidity_2m,dew_point_2m,visibility,precipitation_probability,weather_code&forecast_hours=24&forecast_minutely_15=4&daily=temperature_2m_min,uv_index_max,uv_index_clear_sky_max,temperature_2m_max,sunrise,sunset,rain_sum,precipitation_sum,precipitation_probability_max,weather_code`;
@@ -785,7 +784,6 @@ async function getDefaultData() {
         cityList.value[index].daily_data = rearrangedData;
         cityList.value[index].per_hour_data = rearrangedDataHours;
         cityList.value[index].weather_code = rearrangedData[moment().format("YYYY-MM-DD")].weather_code;
-        console.log('weather_code', rearrangedData[moment().format("YYYY-MM-DD")].weather_code)
         if (rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Rainy' || rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Light Rainy' || rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Moderate Rainy' || rearrangedData[moment().format("YYYY-MM-DD")].weather_code == 'Heavy Rainy') {
             cityList.value[index].bg_image = `url(${imagePath})`
         }

@@ -31,7 +31,6 @@ export const useCityListStore = defineStore('cities', {
     // }
     reset() {
       this.cityList = cityData;
-      console.log('in rwtse',this.cityList)
       this.isMetric = true; // This resets the store to its initial state
     }
   },

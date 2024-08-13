@@ -95,7 +95,6 @@ const isMetricValue = ref(false);
 
 onMounted(async () => {
   isMetricValue.value = isMetric.value;
-  console.log('in setting',isMetricValue.value)
 });
 
 function changeUnit() {

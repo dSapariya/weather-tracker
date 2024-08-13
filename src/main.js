@@ -10,7 +10,6 @@ import './index.css'
 const pinia = createPinia();
 const app = createApp(App)
 pinia.use(piniaPluginPersistedstate);
-app.use(createPinia());
 app.use(pinia);
 app.use(router);
 app.config.globalProperties.$axios = axios;
