@@ -1,8 +1,11 @@
 <template>
-    <div>
-        <!-- <Setting></Setting> -->
 
         <div v-if="cityList && cityList.length > 0">
+            <div>
+        <!-- <Setting></Setting> -->
+        <div class="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50 hidden loader-overlay">
+            <div class="w-12 h-12 border-4 border-solid border-gray-300 rounded-full spinner"></div>
+        </div>
             <div v-for="(city, index) in cityList"
                 class="p-4 bg-cover h-auto md:h-screen flex items-center justify-center"
                 :style="{ 'background-image': city.bg_image }">
@@ -16,7 +19,7 @@
                                 class="row-span-3 w-full h-full flex flex-col items-start justify-start rounded-xl bg-opacity-0">
                                 <div class="relative w-full">
 
-                                    <SearchList :isShow="true" />
+                                    <SearchList :isShow="true" @isLoading="getLoadingStatus"/>
 
                                 </div>
                                 <div
@@ -394,7 +397,7 @@
                                                             :key="weekIndex"
                                                             class="flex flex-col w-full justify-start items-center">
 
-                                                            <div class="hover:bg-gray-700 rounded-xl px-4 py-1 mt-2"
+                                                            <div class="hover:bg-gray-700 rounded-xl px-4 py-2 mt-2"
                                                                 style="width: max-content;">
                                                                 <div class="flex justify-start items-center gap-2">
 
@@ -721,10 +724,6 @@ import slider from "vue3-slider"
 const store = useCityListStore();
 const { cityList, isMetric } = storeToRefs(store);
 const isLoading = ref(true);
-// const backgroundImageStyle = computed(() => ({
-//     backgroundImage: `url(${imagePath})`,
-// }));
-const backgroundImageStyle = ref();
 onMounted(async () => {
     await getDefaultData();
 });
@@ -844,6 +843,17 @@ function classifyWeather(weatherCode) {
         return "Rainy";
     }
 }
+function getLoadingStatus(val){
+    if(val == true){
+        const loader = document.querySelector('.loader-overlay');
+        loader.classList.toggle('hidden');
+    }
+    else{
+        const loader = document.querySelector('.loader-overlay');
+        loader.classList.toggle('hidden');
+    }
+   
+}
 </script>
 
 <style scoped>
@@ -881,4 +891,15 @@ function classifyWeather(weatherCode) {
         flex-direction: row;
     }
 }
+@keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .spinner {
+            border-top-color: transparent;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            border-left-color: #3490dc; /* Tailwind blue-500 */
+            animation: spin 1s linear infinite;
+        }
 </style>

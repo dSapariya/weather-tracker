@@ -41,7 +41,7 @@ import imageSunnyPath from '@/assets/images/Sunny.jpg';
 import imageCloudyPath from '@/assets/images/Cloudy.jpg';
 import imageThunderstormsPath from '@/assets/images/Thunderstorms.jpg';
 import imageSnowyPath from "@/assets/images/Snowy.avif";
-const emit = defineEmits(["searchData"]);
+const emit = defineEmits(["isLoading"]);
 const store = useCityListStore();
 const search = ref("");
 const searchList = ref([]);
@@ -73,7 +73,7 @@ function addSelectedCity(searchCity) {
 }
 
 async function getSearchCityCurrentWeather(searchCity) {
-
+  emit('isLoading',true);
   let data = [searchCity];
   const requests = data.map((city) => {
     var url = "";
@@ -158,6 +158,7 @@ async function getSearchCityCurrentWeather(searchCity) {
 
   isExpanded.value = false;
   search.value = ''
+  emit('isLoading',false);
   store.addCity(searchCity);
 
 }
