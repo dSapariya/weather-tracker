@@ -76,7 +76,7 @@
                                                     "precipitation_probability_max"
                                                     ]
                                                 }}{{ city.daily_units.precipitation_probability_max }} expected in
-                                                    last 24 hrs</p>
+                                                    last 24 hours.</p>
                                             </div>
                                         </div>
                                         <div class=" flex gap-4 mt-4 w-full">
@@ -160,7 +160,7 @@
                                                         class="flex gap-5 overflow-x-auto scroll-smooth w-full card-scroll">
                                                         <div v-for="(hours, hoursIndex) in city.per_hour_data"
                                                             class="flex flex-col w-full justify-start items-center">
-                                                            <div class="hover:bg-gray-700 rounded-xl m-2 p-2"
+                                                            <div class="hover:bg-gray-700 rounded-xl px-4 py-2 mt-2"
                                                                 style="width: max-content;">
                                                                 <div class="flex justify-start items-center gap-2 ">
 
